@@ -1,21 +1,25 @@
-if (!(Test-Path app_info.json)) {
+if (!(Test-Path "app_info.json")) {
     Write-Host "[-] Error: app_info.json not found! Please create it first." -ForegroundColor Red
     exit 1
 }
 
-$info = Get-Content app_info.json -Raw -Encoding utf8 | ConvertFrom-Json
+$info = Get-Content "app_info.json" -Raw -Encoding utf8 | ConvertFrom-Json
 $name = $info.appName
 $shortDesc = $info.appShortDescription
 $longDesc = $info.appLongDescription
 $bundle = $info.appBundle
 $icon = $info.appIconPath
 
+# Fallback values for PowerShell 5.1 compatibility
+$desc = if ($shortDesc) { $shortDesc } else { $name }
+$manifestDesc = if ($shortDesc) { $shortDesc } else { $longDesc }
+
 function Update-FileContent($path, $pattern, $replacement) {
     if (Test-Path $path) {
-        $c = Get-Content $path -Raw -Encoding utf8
+        $c = [System.IO.File]::ReadAllText((Resolve-Path $path), [System.Text.Encoding]::UTF8)
         $newC = [regex]::Replace($c, $pattern, $replacement)
         if ($newC -ne $c) {
-            Set-Content -Path $path -Value $newC -Encoding utf8 -NoNewline
+            [System.IO.File]::WriteAllText((Resolve-Path $path), $newC, [System.Text.Encoding]::UTF8)
             Write-Host "  [✓] Updated $path" -ForegroundColor Green
         }
     }
@@ -39,12 +43,17 @@ Update-FileContent "ios/Runner.xcodeproj/project.pbxproj" 'PRODUCT_BUNDLE_IDENTI
 Update-FileContent "web/index.html" '<title>[^<]*</title>' "<title>$name</title>"
 Update-FileContent "web/index.html" '<meta\s+name="description"\s+content="[^"]*"' "<meta name=`"description`" content=`"$shortDesc`""
 if (Test-Path "web/manifest.json") {
-    $m = Get-Content "web/manifest.json" -Raw -Encoding utf8 | ConvertFrom-Json
-    $m.name = $name
-    $m.short_name = $name
-    $m.description = if ($shortDesc) { $shortDesc } else { $longDesc }
-    $m | ConvertTo-Json -Depth 10 | Set-Content "web/manifest.json" -Encoding utf8
-    Write-Host "  [✓] Updated web/manifest.json" -ForegroundColor Green
+    try {
+        $m = Get-Content "web/manifest.json" -Raw -Encoding utf8 | ConvertFrom-Json
+        $m.name = $name
+        $m.short_name = $name
+        $m.description = $manifestDesc
+        $jsonOut = $m | ConvertTo-Json -Depth 10
+        [System.IO.File]::WriteAllText((Resolve-Path "web/manifest.json"), $jsonOut, [System.Text.Encoding]::UTF8)
+        Write-Host "  [✓] Updated web/manifest.json" -ForegroundColor Green
+    } catch {
+        Write-Host "  [!] Warning updating web/manifest.json: $_" -ForegroundColor Yellow
+    }
 }
 
 # 4. macOS
@@ -53,7 +62,7 @@ Update-FileContent "macos/Runner/Configs/AppInfo.xcconfig" 'PRODUCT_BUNDLE_IDENT
 
 # 5. Windows
 Update-FileContent "windows/runner/main.cpp" 'window\.Create\(L"[^"]*"' "window.Create(L`"$name`""
-Update-FileContent "windows/runner/Runner.rc" 'VALUE "FileDescription", "[^"]*"' "VALUE `"FileDescription`", `"$($shortDesc ? $shortDesc : $name)`""
+Update-FileContent "windows/runner/Runner.rc" 'VALUE "FileDescription", "[^"]*"' "VALUE `"FileDescription`", `"$desc`""
 Update-FileContent "windows/runner/Runner.rc" 'VALUE "ProductName", "[^"]*"' "VALUE `"ProductName`", `"$name`""
 
 # 6. Linux
@@ -62,32 +71,34 @@ Update-FileContent "linux/my_application.cc" 'gtk_window_set_title\(window,\s*"[
 
 # 7. Launcher Icons
 if ($icon -and (Test-Path $icon)) {
-    $yaml = @"
-flutter_launcher_icons:
-  android: true
-  ios: true
-  image_path: "$icon"
-  min_sdk_android: 21
-  web:
-    generate: true
-    image_path: "$icon"
-  windows:
-    generate: true
-    image_path: "$icon"
-  macos:
-    generate: true
-    image_path: "$icon"
-  linux:
-    generate: true
-    image_path: "$icon"
-"@
-    Set-Content -Path "flutter_launcher_icons.yaml" -Value $yaml -Encoding utf8
+    $yamlLines = @(
+        'flutter_launcher_icons:',
+        '  android: true',
+        '  ios: true',
+        "  image_path: `"$icon`"",
+        '  min_sdk_android: 21',
+        '  web:',
+        '    generate: true',
+        "    image_path: `"$icon`"",
+        '  windows:',
+        '    generate: true',
+        "    image_path: `"$icon`"",
+        '  macos:',
+        '    generate: true',
+        "    image_path: `"$icon`"",
+        '  linux:',
+        '    generate: true',
+        "    image_path: `"$icon`""
+    )
+    $yaml = $yamlLines -join "`r`n"
+    [System.IO.File]::WriteAllText((Join-Path (Get-Location) "flutter_launcher_icons.yaml"), $yaml, [System.Text.Encoding]::UTF8)
     Write-Host "  [✓] Generated flutter_launcher_icons.yaml" -ForegroundColor Green
-    
+
+    Write-Host "`n[+] Running flutter_launcher_icons...`n" -ForegroundColor Cyan
     flutter pub add --dev flutter_launcher_icons
     dart run flutter_launcher_icons
-} else {
-    Write-Host "  [!] Icon file not found or not specified at '$icon'" -ForegroundColor Yellow
+} elseif ($icon) {
+    Write-Host "  [!] Warning: Icon image not found at '$icon'" -ForegroundColor Yellow
 }
 
 Write-Host "`n[✓] All platform metadata updated successfully!" -ForegroundColor Green
