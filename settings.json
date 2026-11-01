@@ -224,6 +224,21 @@
                                             "text": "flutter pub get\r"
                                         }
                                     }
+                                ],
+                                "↓ Install & Setup JDK": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u001b"
+                                        }
+                                    },
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "if (!(Test-Path 'C:\\Program Files\\Microsoft\\jdk-17*')) { winget install Microsoft.OpenJDK.17 --silent --accept-package-agreements --accept-source-agreements }; $jdk = (Get-ChildItem 'C:\\Program Files\\Microsoft\\jdk-17*' -ErrorAction SilentlyContinue | Select-Object -First 1).FullName; if ($jdk) { [Environment]::SetEnvironmentVariable('JAVA_HOME', $jdk, 'User'); $p = [Environment]::GetEnvironmentVariable('Path', 'User'); if ($p -notmatch [regex]::Escape(\"$jdk\\bin\")) { [Environment]::SetEnvironmentVariable('Path', \"$p;$jdk\\bin\", 'User') }; $env:JAVA_HOME = $jdk; $env:Path += \";$jdk\\bin\"; Write-Host '[✓] JDK Setup Complete!' -ForegroundColor Green; java -version }\r"
+                                        }
+                                    }
                                 ]
                             }
                         },
@@ -371,7 +386,7 @@
                                     {
                                         "command": "workbench.action.terminal.sendSequence",
                                         "args": {
-                                            "text": "if (!(Test-Path assets/icon)) { mkdir assets/icon -Force | Out-Null }; Set-Content -Path app_info.json -Value '{\n  \"appName\": \"My Flutter App\",\n  \"appShortDescription\": \"Simple and fast Flutter application\",\n  \"appLongDescription\": \"A complete cross-platform Flutter application built for Android, iOS, Web, and Desktop.\",\n  \"appBundle\": \"com.example.myapp\",\n  \"appCategory\": \"Utilities\",\n  \"appIconPath\": \"assets/icon/app_icon.png\"\n}'; Write-Host \"Created app_info.json successfully.\"\r"
+                                            "text": "if (!(Test-Path assets/icon)) { mkdir assets/icon -Force | Out-Null }; Set-Content -Path app_info.json -Value '{\n  \"appName\": \"My Flutter App\",\n  \"appVersion\": \"1.0.0+1\",\n  \"appShortDescription\": \"Simple and fast Flutter application\",\n  \"appLongDescription\": \"A complete cross-platform Flutter application built with Flutter.\",\n  \"appBundle\": \"com.example.myapp\",\n  \"appCategory\": \"Utilities\",\n  \"appIconPath\": \"assets/icon/app_icon.png\",\n  \"keystore\": {\n    \"storePassword\": \"password123\",\n    \"keyPassword\": \"password123\",\n    \"keyAlias\": \"upload\",\n    \"storeFile\": \"upload-keystore.jks\",\n    \"commonName\": \"Developer Name\",\n    \"organizationUnit\": \"Mobile\",\n    \"organizationName\": \"My Organization\",\n    \"locality\": \"Cairo\",\n    \"state\": \"Cairo\",\n    \"country\": \"EG\"\n  }\n}'; Write-Host \"Created app_info.json successfully.\"\r"
                                         }
                                     }
                                 ],
@@ -852,7 +867,7 @@
                                     {
                                         "command": "workbench.action.terminal.sendSequence",
                                         "args": {
-                                            "text": "@('storePassword=password123', 'keyPassword=password123', 'keyAlias=upload', 'storeFile=upload-keystore.jks', 'CN=Flutter Developer', 'OU=Mobile Development', 'O=My Organization', 'L=City', 'ST=State', 'C=US') | Set-Content key.properties; Write-Host \"Created key.properties successfully.\"\r"
+                                            "text": "if (Test-Path app_info.json) { $info = Get-Content app_info.json -Raw -Encoding utf8 | ConvertFrom-Json; $ks = $info.keystore; if ($ks) { $content = @(\"storePassword=$($ks.storePassword)\", \"keyPassword=$($ks.keyPassword)\", \"keyAlias=$($ks.keyAlias)\", \"storeFile=../$($ks.storeFile)\") -join \"`r`n\"; Set-Content -Path key.properties -Value $content; if (!(Test-Path android)) { mkdir android -Force | Out-Null }; Set-Content -Path android/key.properties -Value $content; Write-Host \"[✓] Created key.properties and android/key.properties from app_info.json successfully.\" -ForegroundColor Green } else { Write-Host \"[-] Error: No 'keystore' object found in app_info.json\" -ForegroundColor Red } } else { Write-Host \"[-] Error: app_info.json not found!\" -ForegroundColor Red }\r"
                                         }
                                     }
                                 ],
@@ -1813,7 +1828,7 @@
                             {
                                 "command": "workbench.action.terminal.sendSequence",
                                 "args": {
-                                    "text": "docker system prune -a --volumes -f\r"
+                                    "text": "docker compose down -v --rmi all | docker system prune -a --volumes -f\r"
                                 }
                             }
                         ],
@@ -2046,6 +2061,15 @@
                                             "text": "\u0015flutter pub get\r"
                                         }
                                     }
+                                ],
+                                "↓ Install & Setup JDK": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015sudo apt update && sudo apt install -y openjdk-17-jdk && J=$(dirname $(dirname $(readlink -f $(which java)))) && echo \"export JAVA_HOME=$J\" | sudo tee /etc/profile.d/jdk.sh && echo 'export PATH=$JAVA_HOME/bin:$PATH' | sudo tee -a /etc/profile.d/jdk.sh && source /etc/profile.d/jdk.sh && echo '[✓] JDK Setup Complete!'\r"
+                                        }
+                                    }
                                 ]
                             }
                         },
@@ -2145,7 +2169,7 @@
                                     {
                                         "command": "workbench.action.terminal.sendSequence",
                                         "args": {
-                                            "text": "\u0015mkdir -p assets/icon && printf '{\n  \"appName\": \"My Flutter App\",\n  \"appShortDescription\": \"Simple and fast Flutter application\",\n  \"appLongDescription\": \"A complete cross-platform Flutter application built for Android, iOS, Web, and Desktop.\",\n  \"appBundle\": \"com.example.myapp\",\n  \"appCategory\": \"Utilities\",\n  \"appIconPath\": \"assets/icon/app_icon.png\"\n}\n' > app_info.json && echo \"Created app_info.json successfully.\"\r"
+                                            "text": "\u0015mkdir -p assets/icon && printf '{\n  \"appName\": \"My Flutter App\",\n  \"appVersion\": \"1.0.0+1\",\n  \"appShortDescription\": \"Simple and fast Flutter application\",\n  \"appLongDescription\": \"A complete cross-platform Flutter application built with Flutter.\",\n  \"appBundle\": \"com.example.myapp\",\n  \"appCategory\": \"Utilities\",\n  \"appIconPath\": \"assets/icon/app_icon.png\",\n  \"keystore\": {\n    \"storePassword\": \"password123\",\n    \"keyPassword\": \"password123\",\n    \"keyAlias\": \"upload\",\n    \"storeFile\": \"upload-keystore.jks\",\n    \"commonName\": \"Developer Name\",\n    \"organizationUnit\": \"Mobile\",\n    \"organizationName\": \"My Organization\",\n    \"locality\": \"Cairo\",\n    \"state\": \"Cairo\",\n    \"country\": \"EG\"\n  }\n}\n' > app_info.json && echo \"Created app_info.json successfully.\"\r"
                                         }
                                     }
                                 ],
@@ -3035,7 +3059,7 @@
                             {
                                 "command": "workbench.action.terminal.sendSequence",
                                 "args": {
-                                    "text": "\u0015docker system prune -a --volumes -f\r"
+                                    "text": "\u0015docker compose down -v --rmi all && docker system prune -a --volumes -f\r"
                                 }
                             }
                         ],
@@ -3093,6 +3117,170 @@
                                 }
                             }
                         ]
+                    }
+                },
+                "⬡ Environment": {
+                    "nestedItems": {
+                        "⚙ Make scripts executable": [
+                            "workbench.action.terminal.focus",
+                            {
+                                "command": "workbench.action.terminal.sendSequence",
+                                "args": {
+                                    "text": "\u0015chmod +x backup.sh backup-local.sh\r"
+                                }
+                            }
+                        ],
+                        "↑ Cloud Backup": {
+                            "nestedItems": {
+                                "⚙ Interactive Menu": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh\r"
+                                        }
+                                    }
+                                ],
+                                "↑ Sync All": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh sync-all\r"
+                                        }
+                                    }
+                                ],
+                                "↑ Sync NPM": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh sync-npm\r"
+                                        }
+                                    }
+                                ],
+                                "↑ Sync MySQL (All)": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh sync-mysql\r"
+                                        }
+                                    }
+                                ],
+                                "↑ Sync MySQL (DB)": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh sync-mysql-db "
+                                        }
+                                    }
+                                ],
+                                "↑ Sync Agent": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh sync-agent\r"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "↓ Cloud Restore": {
+                            "nestedItems": {
+                                "↓ Restore All": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh restore-all\r"
+                                        }
+                                    }
+                                ],
+                                "↓ Restore NPM": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh restore-npm\r"
+                                        }
+                                    }
+                                ],
+                                "↓ Restore MySQL (All)": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh restore-mysql\r"
+                                        }
+                                    }
+                                ],
+                                "↓ Restore MySQL (DB)": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh restore-mysql-db "
+                                        }
+                                    }
+                                ],
+                                "↓ Restore Agent": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup.sh restore-agent\r"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "↑ Local Backup": {
+                            "nestedItems": {
+                                "⚙ Backup All / Menu": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup-local.sh\r"
+                                        }
+                                    }
+                                ],
+                                "↑ Backup Single DB": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup-local.sh "
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "↓ Local Restore": {
+                            "nestedItems": {
+                                "↓ Restore All DBs": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup-local.sh restore-all\r"
+                                        }
+                                    }
+                                ],
+                                "↓ Restore Single DB": [
+                                    "workbench.action.terminal.focus",
+                                    {
+                                        "command": "workbench.action.terminal.sendSequence",
+                                        "args": {
+                                            "text": "\u0015./backup-local.sh restore-db "
+                                        }
+                                    }
+                                ]
+                            }
+                        }
                     }
                 }
             }
