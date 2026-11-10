@@ -1,0 +1,4799 @@
+{
+  "$schema": "./schema.json",
+  "commands": [
+    {
+      "name": "Clear",
+      "autoRun": true,
+      "commands": {
+        "commands": [
+          "clear"
+        ],
+        "shells": [
+          "Bash",
+          "PowerShell",
+          "Zsh",
+          "Cmd",
+          "Fish",
+          "Dash"
+        ]
+      },
+      "icon": {
+        "type": "fontawesome",
+        "value": "fa-x",
+        "color": "#c1121f"
+      }
+    },
+    {
+      "name": "Quit",
+      "autoRun": false,
+      "commands": {
+        "commands": [
+          "\u0003"
+        ],
+        "shells": [
+          "Bash",
+          "PowerShell",
+          "Zsh",
+          "Cmd",
+          "Fish",
+          "Dash"
+        ]
+      },
+      "icon": {
+        "type": "fontawesome",
+        "value": "fa-x",
+        "color": "#c1121f"
+      }
+    },
+    {
+      "name": "Back",
+      "autoRun": true,
+      "commands": {
+        "commands": [
+          "cd .."
+        ],
+        "shells": [
+          "Bash",
+          "PowerShell",
+          "Zsh",
+          "Cmd",
+          "Fish",
+          "Dash"
+        ]
+      },
+      "icon": {
+        "type": "fontawesome",
+        "value": "fa-arrow-left"
+      }
+    },
+    {
+      "name": "Go to",
+      "autoRun": true,
+      "commands": {
+        "commands": [
+          "cd ${path}"
+        ],
+        "shells": [
+          "Bash",
+          "PowerShell",
+          "Zsh",
+          "Cmd",
+          "Fish",
+          "Dash"
+        ]
+      },
+      "icon": {
+        "type": "fontawesome",
+        "value": "fa-arrow-right"
+      },
+      "variables": [
+        {
+          "key": "path",
+          "prompt": "أدخل المسار المطلوب الانتقال إليه (Path)",
+          "default": "./"
+        }
+      ]
+    },
+    {
+      "name": "Check command runner update",
+      "autoRun": true,
+      "icon": {
+        "type": "fontawesome",
+        "value": "fa-cloud-arrow-up",
+        "color": "#66BB6A"
+      },
+      "commands": {
+        "commands": [
+          "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
+          "git status -uno",
+          "git push origin main"
+        ],
+        "shells": [
+          "Bash",
+          "PowerShell",
+          "Zsh",
+          "Cmd",
+          "Fish",
+          "Dash"
+        ]
+      }
+    },
+    {
+      "name": "Update command runner",
+      "autoRun": true,
+      "icon": {
+        "type": "fontawesome",
+        "value": "fa-cloud-arrow-up",
+        "color": "#66BB6A"
+      },
+      "commands": [
+        {
+          "commands": [
+            "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
+            "cp -r 'C:\\Users\\mahmoud\\.command-runner.json' 'D:\\Workspace\\VS Code Extensions\\command-runner\\command-runner.json'",
+            "git add -A",
+            "git commit -m \"update $(date '+%Y-%m-%d %H:%M')\"",
+            "git push origin main"
+          ],
+          "shells": [
+            "Bash",
+            "Zsh",
+            "Fish",
+            "Dash"
+          ]
+        },
+        {
+          "commands": [
+            "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
+            "Copy-Item -Recurse 'C:\\Users\\mahmoud\\.command-runner.json' 'D:\\Workspace\\VS Code Extensions\\command-runner\\command-runner.json'",
+            "git add -A",
+            "git commit -m \"update $(Get-Date -Format 'yyyy-MM-dd HH:mm')\"",
+            "git push origin main"
+          ],
+          "shells": [
+            "PowerShell"
+          ]
+        },
+        {
+          "commands": [
+            "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
+            "xcopy /E /I 'C:\\Users\\mahmoud\\.command-runner.json' 'D:\\Workspace\\VS Code Extensions\\command-runner\\command-runner.json'",
+            "git add -A",
+            "git commit -m \"update %date% %time%\"",
+            "git push origin main"
+          ],
+          "shells": [
+            "Cmd"
+          ]
+        }
+      ]
+    }
+  ],
+  "folders": [
+    {
+      "name": "General",
+      "commands": [
+        {
+          "name": "View all contents",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "ls -la"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "ls -Force"
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "dir /a"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-folder-tree"
+          }
+        },
+        {
+          "name": "View path",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "pwd"
+              ],
+              "shells": [
+                "Bash",
+                "PowerShell",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "cd"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-location-dot"
+          }
+        },
+        {
+          "name": "Create new file",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "touch ${fileName}"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "New-Item ${fileName}"
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "type nul > ${fileName}"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-file-circle-plus",
+            "color": "#66BB6A"
+          },
+          "variables": [
+            {
+              "key": "fileName",
+              "prompt": "أدخل اسم الملف الجديد (مثل index.ts أو style.css)",
+              "default": "index.js"
+            }
+          ]
+        },
+        {
+          "name": "Create new folder",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "mkdir -p ${folderName}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-folder-plus",
+            "color": "#66BB6A"
+          },
+          "variables": [
+            {
+              "key": "folderName",
+              "prompt": "أدخل اسم المجلد الجديد",
+              "default": "new-folder"
+            }
+          ]
+        },
+        {
+          "name": "Copy",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "cp -r ${source} ${dest}"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "Copy-Item -Recurse ${source} ${dest}"
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "xcopy /E /I ${source} ${dest}"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-copy"
+          },
+          "variables": [
+            {
+              "key": "source",
+              "prompt": "أدخل مسار الملف/المجلد المراد نسخه"
+            },
+            {
+              "key": "dest",
+              "prompt": "أدخل مسار الوجهة"
+            }
+          ]
+        },
+        {
+          "name": "Cut",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "mv ${source} ${dest}"
+              ],
+              "shells": [
+                "Bash",
+                "PowerShell",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "move ${source} ${dest}"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-scissors"
+          },
+          "variables": [
+            {
+              "key": "source",
+              "prompt": "أدخل مسار الملف المراد نقله (Cut)",
+              "default": "./old-path"
+            },
+            {
+              "key": "dest",
+              "prompt": "أدخل مسار الوجهة الجديد",
+              "default": "./new-path"
+            }
+          ]
+        },
+        {
+          "name": "Delete file",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "rm ${filePath}"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "Remove-Item ${filePath}"
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "del /f /q ${filePath}"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-file-circle-xmark",
+            "color": "#c1121f"
+          },
+          "variables": [
+            {
+              "key": "filePath",
+              "prompt": "أدخل مسار الملف المراد حذفه"
+            }
+          ]
+        },
+        {
+          "name": "Delete folder",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "rm -rf ${folderPath}"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "Remove-Item -Recurse -Force ${folderPath}"
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "rmdir /s /q ${folderPath}"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-folder-minus",
+            "color": "#c1121f"
+          },
+          "variables": [
+            {
+              "key": "folderPath",
+              "prompt": "أدخل مسار المجلد المراد حذفه"
+            }
+          ]
+        }
+      ],
+      "folders": [],
+      "icon": {
+        "type": "fontawesome",
+        "value": "fa-terminal"
+      }
+    },
+    {
+      "name": "Flutter",
+      "commands": [],
+      "folders": [
+        {
+          "name": "General",
+          "commands": [
+            {
+              "name": "Doctor",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter doctor"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-user-doctor",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Upgrade",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter upgrade"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-circle-arrow-up",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Clean",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter clean"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-soap",
+                "color": "#c1121f"
+              }
+            },
+            {
+              "name": "pub get",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub get"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-down",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Install & Setup JDK",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "sudo apt update && sudo apt install -y openjdk-17-jdk && J=$(dirname $(dirname $(readlink -f $(which java)))) && echo \"export JAVA_HOME=$J\" | sudo tee /etc/profile.d/jdk.sh && echo 'export PATH=$JAVA_HOME/bin:$PATH' | sudo tee -a /etc/profile.d/jdk.sh && source /etc/profile.d/jdk.sh && echo '[✓] JDK Setup Complete!'"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "sudo apt update; and sudo apt install -y openjdk-17-jdk; and set -Ux JAVA_HOME (dirname (dirname (readlink -f (which java)))); and set -U fish_user_paths $JAVA_HOME/bin $fish_user_paths; and echo '[✓] JDK Setup Complete!'"
+                  ],
+                  "shells": [
+                    "Fish"
+                  ]
+                },
+                {
+                  "commands": [
+                    "if (!(Test-Path 'C:\\Program Files\\Microsoft\\jdk-17*')) { winget install Microsoft.OpenJDK.17 --silent --accept-package-agreements --accept-source-agreements }; $jdk = (Get-ChildItem 'C:\\Program Files\\Microsoft\\jdk-17*' -ErrorAction SilentlyContinue | Select-Object -First 1).FullName; if ($jdk) { [Environment]::SetEnvironmentVariable('JAVA_HOME', $jdk, 'User'); $p = [Environment]::GetEnvironmentVariable('Path', 'User'); if ($p -notmatch [regex]::Escape(\"$jdk\\bin\")) { [Environment]::SetEnvironmentVariable('Path', \"$p;$jdk\\bin\", 'User') }; $env:JAVA_HOME = $jdk; $env:Path += \";$jdk\\bin\"; Write-Host '[✓] JDK Setup Complete!' -ForegroundColor Green; java -version }"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "winget install Microsoft.OpenJDK.17"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-java"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-terminal"
+          }
+        },
+        {
+          "name": "Create",
+          "commands": [
+            {
+              "name": "Create in this folder",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter create ."
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-plus",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Create with new folder",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter create ${projectName}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-plus",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "projectName",
+                  "prompt": "أدخل اسم مشروع Flutter الجديد (lowercase_with_underscores)",
+                  "default": "my_flutter_app"
+                }
+              ]
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-plus",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Run",
+          "commands": [
+            {
+              "name": "Run",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter run"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-play",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Run Windows",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter run -d windows"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-windows",
+                "color": "#3FC1F7"
+              }
+            },
+            {
+              "name": "Run Chrome",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter run -d chrome"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-chrome",
+                "color": "#c1121f"
+              }
+            },
+            {
+              "name": "Run Mac OS",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter run -d macos"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-apple"
+              }
+            },
+            {
+              "name": "Run Linux",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter run -d linux"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-linux"
+              }
+            },
+            {
+              "name": "Hot Restart",
+              "autoRun": false,
+              "commands": {
+                "commands": [
+                  "R"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-arrows-rotate",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Hot Reload",
+              "autoRun": false,
+              "commands": {
+                "commands": [
+                  "r"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-bolt",
+                "color": "#ffb703"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-play",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "App Branding",
+          "commands": [
+            {
+              "name": "Create app info file .env",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "cat << 'EOF' > .env",
+                    "# App Info",
+                    "APP_NAME=\"My Flutter App\"",
+                    "APP_BUNDLE=\"com.mahmoud.myapp\"",
+                    "APP_VERSION=\"1.0.0+1\"",
+                    "APP_SHORT_DESCRIPTION=\"Simple and fast Flutter application\"",
+                    "APP_LONG_DESCRIPTION=\"A complete cross-platform Flutter application built with Flutter.\"",
+                    "APP_CATEGORY=\"Utilities\"",
+                    "APP_ICON_PATH=\"assets/images/app_icon.png\"",
+                    "",
+                    "# Publisher Info",
+                    "COMMON_NAME=\"Mahmoud Abdelhamid\"",
+                    "ORGANIZATION_NAME=\"Mahmoud Abdelhamid\"",
+                    "ORGANIZATION_UNIT=\"Independent\"",
+                    "COUNTRY=\"EG\"",
+                    "STATE=\"Cairo\"",
+                    "LOCALITY=\"Cairo\"",
+                    "",
+                    "# Keystore Info",
+                    "KEY_ALIAS=\"upload\"",
+                    "STORE_PASSWORD=\"password123\"",
+                    "KEY_PASSWORD=\"password123\"",
+                    "STORE_FILE=\"upload-keystore.jks\"",
+                    "STORE_TYPE=\"PKCS12\"",
+                    "ALGORITHM=\"RSA 2048-bit\"",
+                    "SIGNATURE=\"SHA384withRSA\"",
+                    "KEY_PROPERTIES_PATH=\"android/key.properties\"",
+                    "KEYSTORE_PATH=\"android/app/upload-keystore.jks\"",
+                    "VALIDITY=\"10000\"",
+                    "SHA1=\"\"",
+                    "SHA256=\"\"",
+                    "EOF"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$envContent = @'",
+                    "# App Info",
+                    "APP_NAME=\"My Flutter App\"",
+                    "APP_BUNDLE=\"com.mahmoud.myapp\"",
+                    "APP_VERSION=\"1.0.0+1\"",
+                    "APP_SHORT_DESCRIPTION=\"Simple and fast Flutter application\"",
+                    "APP_LONG_DESCRIPTION=\"A complete cross-platform Flutter application built with Flutter.\"",
+                    "APP_CATEGORY=\"Utilities\"",
+                    "APP_ICON_PATH=\"assets/images/app_icon.png\"",
+                    "",
+                    "# Publisher Info",
+                    "COMMON_NAME=\"Mahmoud Abdelhamid\"",
+                    "ORGANIZATION_NAME=\"Mahmoud Abdelhamid\"",
+                    "ORGANIZATION_UNIT=\"Independent\"",
+                    "COUNTRY=\"EG\"",
+                    "STATE=\"Cairo\"",
+                    "LOCALITY=\"Cairo\"",
+                    "",
+                    "# Keystore Info",
+                    "KEY_ALIAS=\"upload\"",
+                    "STORE_PASSWORD=\"password123\"",
+                    "KEY_PASSWORD=\"password123\"",
+                    "STORE_FILE=\"upload-keystore.jks\"",
+                    "STORE_TYPE=\"PKCS12\"",
+                    "ALGORITHM=\"RSA 2048-bit\"",
+                    "SIGNATURE=\"SHA384withRSA\"",
+                    "KEY_PROPERTIES_PATH=\"android/key.properties\"",
+                    "KEYSTORE_PATH=\"android/app/upload-keystore.jks\"",
+                    "VALIDITY=\"10000\"",
+                    "SHA1=\"\"",
+                    "SHA256=\"\"",
+                    "'@",
+                    "Set-Content -Path \".env\" -Value $envContent -Encoding utf8"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$envContent = @'",
+                    "# App Info",
+                    "APP_NAME=\"My Flutter App\"",
+                    "APP_BUNDLE=\"com.mahmoud.myapp\"",
+                    "APP_VERSION=\"1.0.0+1\"",
+                    "APP_SHORT_DESCRIPTION=\"Simple and fast Flutter application\"",
+                    "APP_LONG_DESCRIPTION=\"A complete cross-platform Flutter application built with Flutter.\"",
+                    "APP_CATEGORY=\"Utilities\"",
+                    "APP_ICON_PATH=\"assets/images/app_icon.png\"",
+                    "",
+                    "# Publisher Info",
+                    "COMMON_NAME=\"Mahmoud Abdelhamid\"",
+                    "ORGANIZATION_NAME=\"Mahmoud Abdelhamid\"",
+                    "ORGANIZATION_UNIT=\"Independent\"",
+                    "COUNTRY=\"EG\"",
+                    "STATE=\"Cairo\"",
+                    "LOCALITY=\"Cairo\"",
+                    "",
+                    "# Keystore Info",
+                    "KEY_ALIAS=\"upload\"",
+                    "STORE_PASSWORD=\"password123\"",
+                    "KEY_PASSWORD=\"password123\"",
+                    "STORE_FILE=\"upload-keystore.jks\"",
+                    "STORE_TYPE=\"PKCS12\"",
+                    "ALGORITHM=\"RSA 2048-bit\"",
+                    "SIGNATURE=\"SHA384withRSA\"",
+                    "KEY_PROPERTIES_PATH=\"android/key.properties\"",
+                    "KEYSTORE_PATH=\"android/app/upload-keystore.jks\"",
+                    "VALIDITY=\"10000\"",
+                    "SHA1=\"\"",
+                    "SHA256=\"\"",
+                    "'@",
+                    "Set-Content -Path \".env\" -Value $envContent -Encoding utf8"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-code",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Create Apply Info file",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "cat << 'EOF' > update_app_info.dart",
+                    "import 'dart:io';",
+                    "",
+                    "// Master script to execute app version and icon updates with automatic dependency check",
+                    "void main() async {",
+                    "  print('========================================');",
+                    "  print('🚀 Starting Master App Update Process...');",
+                    "  print('========================================');",
+                    "",
+                    "  // Check if .env exists",
+                    "  final envFile = File('.env');",
+                    "  if (!envFile.existsSync()) {",
+                    "    print('❌ Error: .env file not found!');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  // Read and parse .env file",
+                    "  final lines = await envFile.readAsLines();",
+                    "  final Map<String, String> env = {};",
+                    "  for (var line in lines) {",
+                    "    if (line.trim().isEmpty || line.startsWith('#')) continue;",
+                    "    final parts = line.split('=');",
+                    "    if (parts.length >= 2) {",
+                    "      final key = parts[0].trim();",
+                    "      final value = parts.sublist(1).join('=').replaceAll('\"', '').trim();",
+                    "      env[key] = value;",
+                    "    }",
+                    "  }",
+                    "",
+                    "  final appVersion = env['APP_VERSION'] ?? '1.0.0+1';",
+                    "  final iconPath = env['APP_ICON_PATH'];",
+                    "",
+                    "  final pubspecFile = File('pubspec.yaml');",
+                    "  if (!pubspecFile.existsSync()) {",
+                    "    print('❌ Error: pubspec.yaml not found!');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  String pubspecContent = await pubspecFile.readAsString();",
+                    "",
+                    "  // Helper function to run flutter commands safely inside shell environment",
+                    "  Future<void> runFlutterCommand(List<String> args) async {",
+                    "    String executable = Platform.isWindows ? 'flutter.bat' : 'flutter';",
+                    "    var result = await Process.run(executable, args, runInShell: true);",
+                    "    if (result.exitCode != 0) {",
+                    "      print('❌ Error executing flutter ${args.join(\" \")}: ${result.stderr}');",
+                    "      exit(1);",
+                    "    }",
+                    "    stdout.write(result.stdout);",
+                    "  }",
+                    "",
+                    "  // -----------------------------------------------------------------",
+                    "  // STEP 0: Check & Ensure flutter_launcher_icons dependency exists",
+                    "  // -----------------------------------------------------------------",
+                    "  print('\\n--- Step 0: Checking Dependencies ---');",
+                    "  if (!pubspecContent.contains('flutter_launcher_icons')) {",
+                    "    print('⚠️ flutter_launcher_icons not found in pubspec.yaml. Adding it automatically...');",
+                    "    await runFlutterCommand(['pub', 'add', '--dev', 'flutter_launcher_icons']);",
+                    "    pubspecContent = await pubspecFile.readAsString();",
+                    "  } else {",
+                    "    print('✅ flutter_launcher_icons dependency is already present.');",
+                    "  }",
+                    "",
+                    "  // -----------------------------------------------------------------",
+                    "  // STEP 1: Update App Version safely",
+                    "  // -----------------------------------------------------------------",
+                    "  print('\\n--- Step 1: Updating App Version ---');",
+                    "  if (pubspecContent.contains('version:')) {",
+                    "    pubspecContent = pubspecContent.replaceFirst(",
+                    "      RegExp(r'version:\\s*[^\\s]+'),",
+                    "      'version: $appVersion',",
+                    "    );",
+                    "  } else {",
+                    "    pubspecContent = 'version: $appVersion\\n' + pubspecContent;",
+                    "  }",
+                    "  ",
+                    "  await pubspecFile.writeAsString(pubspecContent);",
+                    "  print('✅ Successfully updated pubspec.yaml version to: $appVersion');",
+                    "",
+                    "  // -----------------------------------------------------------------",
+                    "  // STEP 2: Update App Icons config safely",
+                    "  // -----------------------------------------------------------------",
+                    "  print('\\n--- Step 2: Updating App Icons ---');",
+                    "  if (iconPath == null || iconPath.isEmpty) {",
+                    "    print('⚠️ Warning: APP_ICON_PATH not specified in .env. Skipping icon generation.');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  if (!File(iconPath).existsSync()) {",
+                    "    print('❌ Error: Icon image file not found at: $iconPath');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  print('📂 Target icon path: $iconPath');",
+                    "",
+                    "  pubspecContent = await pubspecFile.readAsString();",
+                    "",
+                    "  if (pubspecContent.contains('image_path:')) {",
+                    "    int lastIndex = pubspecContent.lastIndexOf('image_path:');",
+                    "    int blockStart = pubspecContent.lastIndexOf('\\n', lastIndex);",
+                    "    if (blockStart > 0) {",
+                    "      String sub = pubspecContent.substring(0, blockStart);",
+                    "      int keyIndex = sub.lastIndexOf('flutter_launcher_icons:');",
+                    "      if (keyIndex != -1 && !sub.substring(keyIndex).contains('dev_dependencies')) {",
+                    "        pubspecContent = sub.substring(0, keyIndex).trim();",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "",
+                    "  final iconConfigBlock = '''",
+                    "",
+                    "flutter_launcher_icons:",
+                    "  image_path: \"$iconPath\"",
+                    "  android: true",
+                    "  ios: true",
+                    "  web:",
+                    "    generate: true",
+                    "    image_path: \"$iconPath\"",
+                    "  windows:",
+                    "    generate: true",
+                    "    image_path: \"$iconPath\"",
+                    "    icon_size: 48",
+                    "  macos:",
+                    "    generate: true",
+                    "    image_path: \"$iconPath\"",
+                    "''';",
+                    "",
+                    "  pubspecContent = pubspecContent.trim() + '\\n' + iconConfigBlock;",
+                    "  await pubspecFile.writeAsString(pubspecContent);",
+                    "  print('✅ Successfully updated launcher icons configuration in pubspec.yaml.');",
+                    "",
+                    "  print('⚙️ Running flutter pub get...');",
+                    "  await runFlutterCommand(['pub', 'get']);",
+                    "",
+                    "  print('🎨 Generating platform icons...');",
+                    "  await runFlutterCommand(['pub', 'run', 'flutter_launcher_icons:main']);",
+                    "",
+                    "  print('\\n========================================');",
+                    "  print('🎉 All update processes completed successfully!');",
+                    "  print('========================================');",
+                    "}",
+                    "EOF"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$scriptContent = @'",
+                    "import 'dart:io';",
+                    "",
+                    "void main() async {",
+                    "  print('========================================');",
+                    "  print('🚀 Starting Master App Update Process...');",
+                    "  print('========================================');",
+                    "",
+                    "  final envFile = File('.env');",
+                    "  if (!envFile.existsSync()) {",
+                    "    print('❌ Error: .env file not found!');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  final lines = await envFile.readAsLines();",
+                    "  final Map<String, String> env = {};",
+                    "  for (var line in lines) {",
+                    "    if (line.trim().isEmpty || line.startsWith('#')) continue;",
+                    "    final parts = line.split('=');",
+                    "    if (parts.length >= 2) {",
+                    "      final key = parts[0].trim();",
+                    "      final value = parts.sublist(1).join('=').replaceAll('\"', '').trim();",
+                    "      env[key] = value;",
+                    "    }",
+                    "  }",
+                    "",
+                    "  final appVersion = env['APP_VERSION'] ?? '1.0.0+1';",
+                    "  final iconPath = env['APP_ICON_PATH'];",
+                    "",
+                    "  final pubspecFile = File('pubspec.yaml');",
+                    "  if (!pubspecFile.existsSync()) {",
+                    "    print('❌ Error: pubspec.yaml not found!');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  String pubspecContent = await pubspecFile.readAsString();",
+                    "",
+                    "  Future<void> runFlutterCommand(List<String> args) async {",
+                    "    String executable = Platform.isWindows ? 'flutter.bat' : 'flutter';",
+                    "    var result = await Process.run(executable, args, runInShell: true);",
+                    "    if (result.exitCode != 0) {",
+                    "      print('❌ Error executing flutter ${args.join(\" \")}: ${result.stderr}');",
+                    "      exit(1);",
+                    "    }",
+                    "    stdout.write(result.stdout);",
+                    "  }",
+                    "",
+                    "  print('\\n--- Step 0: Checking Dependencies ---');",
+                    "  if (!pubspecContent.contains('flutter_launcher_icons')) {",
+                    "    print('⚠️ flutter_launcher_icons not found in pubspec.yaml. Adding it automatically...');",
+                    "    await runFlutterCommand(['pub', 'add', '--dev', 'flutter_launcher_icons']);",
+                    "    pubspecContent = await pubspecFile.readAsString();",
+                    "  } else {",
+                    "    print('✅ flutter_launcher_icons dependency is already present.');",
+                    "  }",
+                    "",
+                    "  print('\\n--- Step 1: Updating App Version ---');",
+                    "  if (pubspecContent.contains('version:')) {",
+                    "    pubspecContent = pubspecContent.replaceFirst(",
+                    "      RegExp(r'version:\\s*[^\\s]+'),",
+                    "      'version: $appVersion',",
+                    "    );",
+                    "  } else {",
+                    "    pubspecContent = 'version: $appVersion\\n' + pubspecContent;",
+                    "  }",
+                    "  ",
+                    "  await pubspecFile.writeAsString(pubspecContent);",
+                    "  print('✅ Successfully updated pubspec.yaml version to: $appVersion');",
+                    "",
+                    "  print('\\n--- Step 2: Updating App Icons ---');",
+                    "  if (iconPath == null || iconPath.isEmpty) {",
+                    "    print('⚠️ Warning: APP_ICON_PATH not specified in .env. Skipping icon generation.');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  if (!File(iconPath).existsSync()) {",
+                    "    print('❌ Error: Icon image file not found at: $iconPath');",
+                    "    return;",
+                    "  }",
+                    "",
+                    "  print('📂 Target icon path: $iconPath');",
+                    "",
+                    "  pubspecContent = await pubspecFile.readAsString();",
+                    "",
+                    "  if (pubspecContent.contains('image_path:')) {",
+                    "    int lastIndex = pubspecContent.lastIndexOf('image_path:');",
+                    "    int blockStart = pubspecContent.lastIndexOf('\\n', lastIndex);",
+                    "    if (blockStart > 0) {",
+                    "      String sub = pubspecContent.substring(0, blockStart);",
+                    "      int keyIndex = sub.lastIndexOf('flutter_launcher_icons:');",
+                    "      if (keyIndex != -1 && !sub.substring(keyIndex).contains('dev_dependencies')) {",
+                    "        pubspecContent = sub.substring(0, keyIndex).trim();",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "",
+                    "  final iconConfigBlock = '''",
+                    "",
+                    "flutter_launcher_icons:",
+                    "  image_path: \"$iconPath\"",
+                    "  android: true",
+                    "  ios: true",
+                    "  web:",
+                    "    generate: true",
+                    "    image_path: \"$iconPath\"",
+                    "  windows:",
+                    "    generate: true",
+                    "    image_path: \"$iconPath\"",
+                    "    icon_size: 48",
+                    "  macos:",
+                    "    generate: true",
+                    "    image_path: \"$iconPath\"",
+                    "''';",
+                    "",
+                    "  pubspecContent = pubspecContent.trim() + '\\n' + iconConfigBlock;",
+                    "  await pubspecFile.writeAsString(pubspecContent);",
+                    "  print('✅ Successfully updated launcher icons configuration in pubspec.yaml.');",
+                    "",
+                    "  print('⚙️ Running flutter pub get...');",
+                    "  await runFlutterCommand(['pub', 'get']);",
+                    "",
+                    "  print('🎨 Generating platform icons...');",
+                    "  await runFlutterCommand(['pub', 'run', 'flutter_launcher_icons:main']);",
+                    "",
+                    "  print('\\n========================================');",
+                    "  print('🎉 All update processes completed successfully!');",
+                    "  print('========================================');",
+                    "}",
+                    "'@",
+                    "Set-Content -Path \"update_app_info.dart\" -Value $scriptContent -Encoding utf8"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "(",
+                    "echo import 'dart:io';",
+                    "echo.",
+                    "echo void main() async {",
+                    "echo   print('========================================');",
+                    "echo   print('🚀 Starting Master App Update Process...');",
+                    "echo   print('========================================');",
+                    "echo   final envFile = File('.env');",
+                    "echo   if (!envFile.existsSync()) {",
+                    "echo     print('❌ Error: .env file not found!');",
+                    "echo     return;",
+                    "echo   }",
+                    "echo   final lines = await envFile.readAsLines();",
+                    "echo   final Map<String, String> env = {};",
+                    "echo   for (var line in lines) {",
+                    "echo     if (line.trim().isEmpty || line.startsWith('#')) continue;",
+                    "echo     final parts = line.split('=');",
+                    "echo     if (parts.length >= 2) {",
+                    "echo       env[parts[0].trim()] = parts.sublist(1).join('=').replaceAll('\"', '').trim();",
+                    "echo     }",
+                    "echo   }",
+                    "echo   final appVersion = env['APP_VERSION'] ?? '1.0.0+1';",
+                    "echo   final iconPath = env['APP_ICON_PATH'];",
+                    "echo   final pubspecFile = File('pubspec.yaml');",
+                    "echo   if (!pubspecFile.existsSync()) {",
+                    "echo     print('❌ Error: pubspec.yaml not found!');",
+                    "echo     return;",
+                    "echo   }",
+                    "echo   String pubspecContent = await pubspecFile.readAsString();",
+                    "echo   String executable = Platform.isWindows ? 'flutter.bat' : 'flutter';",
+                    "echo   if (!pubspecContent.contains('flutter_launcher_icons')) {",
+                    "echo     await Process.run(executable, ['pub', 'add', '--dev', 'flutter_launcher_icons'], runInShell: true);",
+                    "echo   }",
+                    "echo   print('--- Step 1: Updating App Version ---');",
+                    "echo   if (pubspecContent.contains('version:')) {",
+                    "echo     pubspecContent = pubspecContent.replaceFirst(RegExp(r'version:\\s*[^\\s]+'), 'version: $appVersion');",
+                    "echo   } else {",
+                    "echo     pubspecContent = 'version: $appVersion\\n' + pubspecContent;",
+                    "echo   }",
+                    "echo   await pubspecFile.writeAsString(pubspecContent);",
+                    "echo   if (iconPath != null && iconPath.isNotEmpty) {",
+                    "echo     print('--- Step 2: Updating App Icons ---');",
+                    "echo     await Process.run(executable, ['pub', 'get'], runInShell: true);",
+                    "echo     await Process.run(executable, ['pub', 'run', 'flutter_launcher_icons:main'], runInShell: true);",
+                    "echo     print('✨ Process completed.');",
+                    "echo   }",
+                    "echo }",
+                    ") > update_app_info.dart"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-code",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Apply app info & icons",
+              "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-wand-magic-sparkles",
+                "color": "#ffb703"
+              },
+              "commands": {
+                "commands": [
+                  "dart run update_app_info.dart"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              }
+            },
+            {
+              "name": "Install flutter_launcher_icons",
+              "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-terminal"
+              },
+              "commands": {
+                "commands": [
+                  "flutter pub add --dev flutter_launcher_icons"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-circle-info",
+            "color": "#91A4AE"
+          }
+        },
+        {
+          "name": "Pub",
+          "commands": [
+            {
+              "name": "Pub get",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub get"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-down",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Pub upgrade",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub upgrade"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-circle-arrow-up",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Pub upgrade major",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub upgrade --major-versions"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-angles-up",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Pub outdated",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub outdated"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-clock-rotate-left",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Pub add",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub add ${package}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cube",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "package",
+                  "prompt": "أدخل اسم الحزمة المراد تثبيتها في Flutter",
+                  "default": "provider"
+                }
+              ]
+            },
+            {
+              "name": "Pub add dev",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub add --dev ${package}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-screwdriver-wrench",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "package",
+                  "prompt": "أدخل اسم حزمة التطوير (Dev Dependency)",
+                  "default": "build_runner"
+                }
+              ]
+            },
+            {
+              "name": "Pub remove",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub remove ${package}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-trash",
+                "color": "#c1121f"
+              },
+              "variables": [
+                {
+                  "key": "package",
+                  "prompt": "أدخل اسم الحزمة المراد حذفها من Flutter"
+                }
+              ]
+            },
+            {
+              "name": "Pub deps",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub deps"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-sitemap"
+              }
+            },
+            {
+              "name": "Pub cache repair",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub cache repair"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-wrench"
+              }
+            },
+            {
+              "name": "Pub cache clean",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub cache clean"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-trash-can",
+                "color": "#c1121f"
+              }
+            },
+            {
+              "name": "Build runner build",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub run build_runner build --delete-conflicting-outputs"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-gears",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Build runner watch",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter pub run build_runner watch --delete-conflicting-outputs"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-eye",
+                "color": "#0077b6"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-brands fa-dart-lang",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Build",
+          "commands": [
+            {
+              "name": "Build",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-solid fa-hammer",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Build Android apk",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build apk --release"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-android",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Build Android aab",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build appbundle --release"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-google-play",
+                "color": "#4085F0"
+              }
+            },
+            {
+              "name": "Build IOS app",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build ios --release"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-apple"
+              }
+            },
+            {
+              "name": "Build Windows exe",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build windows --release"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-windows",
+                "color": "#3FC1F7"
+              }
+            },
+            {
+              "name": "Build Linux",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build linux --release"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-linux"
+              }
+            },
+            {
+              "name": "Build Mac OS app",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build macos --release"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-apple"
+              }
+            },
+            {
+              "name": "Build Web",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "flutter build web --release"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-globe",
+                "color": "#0077b6"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-bug",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Copy to release",
+          "commands": [
+            {
+              "name": "Copy all",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "New-Item -ItemType Directory -Force -Path \"release\"",
+                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
+                  "Copy-Item -Path \"build\\app\\outputs\\flutter-apk\\app-release.apk\" -Destination \"release\\$projectName.apk\"",
+                  "Copy-Item -Path \"build\\app\\outputs\\bundle\\release\\app-release.aab\" -Destination \"release\\$projectName.aab\"",
+                  "Copy-Item -Path \"build\\windows\\x64\\runner\\Release\\*\" -Destination \"release\\$projectName-windows\" -Recurse",
+                  "Get-ChildItem -Path \"release\\$projectName-windows\\*.exe\" | Rename-Item -NewName \"$projectName.exe\"",
+                  "New-Item -ItemType Directory -Force -Path \"release\\$projectName-web\"",
+                  "Copy-Item -Path \"build\\web\\*\" -Destination \"release\\$projectName-web\" -Recurse"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-copy"
+              }
+            },
+            {
+              "name": "Copy apk",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "New-Item -ItemType Directory -Force -Path \"release\"",
+                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
+                  "Copy-Item -Path \"build\\app\\outputs\\flutter-apk\\app-release.apk\" -Destination \"release\\$projectName.apk\""
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-android",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Copy aab",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "New-Item -ItemType Directory -Force -Path \"release\"",
+                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
+                  "Copy-Item -Path \"build\\app\\outputs\\bundle\\release\\app-release.aab\" -Destination \"release\\$projectName.aab\""
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-google-play",
+                "color": "#4085F0"
+              }
+            },
+            {
+              "name": "Copy ios",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "mkdir -p release",
+                    "cp -r build/ios/iphoneos/Runner.app \"release/$(basename \"$PWD\").app\""
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/ios/iphoneos/Runner.app \"release/$n.app\""
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/ios/iphoneos/Runner.app \"release/$n.app\""
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-apple"
+              }
+            },
+            {
+              "name": "Copy windows",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "New-Item -ItemType Directory -Force -Path \"release\"",
+                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
+                  "Copy-Item -Path \"build\\windows\\x64\\runner\\Release\\*\" -Destination \"release\\$projectName-windows\" -Recurse",
+                  "Get-ChildItem -Path \"release\\$projectName-windows\\*.exe\" | Rename-Item -NewName \"$projectName.exe\""
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-windows",
+                "color": "#3FC1F7"
+              }
+            },
+            {
+              "name": "Copy linux",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "mkdir -p release",
+                    "cp -r build/linux/x64/release/bundle \"release/$(basename \"$PWD\")-linux\""
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/linux/x64/release/bundle \"release/$n-linux\""
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/linux/x64/release/bundle \"release/$n-linux\""
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-linux"
+              }
+            },
+            {
+              "name": "Copy macos",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "mkdir -p release",
+                    "cp -r build/macos/Build/Products/Release/*.app \"release/$(basename \"$PWD\")-macos.app\""
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/macos/Build/Products/Release/*.app \"release/$n-macos.app\""
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/macos/Build/Products/Release/*.app \"release/$n-macos.app\""
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-apple"
+              }
+            },
+            {
+              "name": "Copy web",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "New-Item -ItemType Directory -Force -Path \"release\"",
+                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
+                  "New-Item -ItemType Directory -Force -Path \"release\\$projectName-web\"",
+                  "Copy-Item -Path \"build\\web\\*\" -Destination \"release\\$projectName-web\" -Recurse"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-globe",
+                "color": "#0077b6"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-box-archive"
+          }
+        },
+        {
+          "name": "Keystore",
+          "commands": [
+            {
+              "name": "Install keytool",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "sudo apt update && sudo apt install -y default-jdk"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "winget install Microsoft.OpenJDK.17"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "winget install Microsoft.OpenJDK.17"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-key"
+              }
+            },
+            {
+              "name": "Create key.properties",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "printf \"storePassword=password123\\nkeyPassword=password123\\nkeyAlias=upload\\nstoreFile=upload-keystore.jks\\nCN=Flutter Developer\\nOU=Mobile Development\\nO=My Organization\\nL=City\\nST=State\\nC=US\\n\" > key.properties && echo \"Created key.properties successfully.\""
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "if (Test-Path app_info.json) { $info = Get-Content app_info.json -Raw -Encoding utf8 | ConvertFrom-Json; $ks = $info.keystore; if ($ks) { $content = @(\"storePassword=$($ks.storePassword)\", \"keyPassword=$($ks.keyPassword)\", \"keyAlias=$($ks.keyAlias)\", \"storeFile=../$($ks.storeFile)\") -join \"`r`n\"; Set-Content -Path key.properties -Value $content; if (!(Test-Path android)) { mkdir android -Force | Out-Null }; Set-Content -Path android/key.properties -Value $content; Write-Host \"[✓] Created key.properties and android/key.properties from app_info.json successfully.\" -ForegroundColor Green } else { Write-Host \"[-] Error: No 'keystore' object found in app_info.json\" -ForegroundColor Red } } else { Write-Host \"[-] Error: app_info.json not found!\" -ForegroundColor Red }"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "if (Test-Path app_info.json) { $info = Get-Content app_info.json -Raw -Encoding utf8 | ConvertFrom-Json; $ks = $info.keystore; if ($ks) { $content = @(\"storePassword=$($ks.storePassword)\", \"keyPassword=$($ks.keyPassword)\", \"keyAlias=$($ks.keyAlias)\", \"storeFile=../$($ks.storeFile)\") -join \"`r`n\"; Set-Content -Path key.properties -Value $content; if (!(Test-Path android)) { mkdir android -Force | Out-Null }; Set-Content -Path android/key.properties -Value $content; Write-Host \"[✓] Created key.properties and android/key.properties from app_info.json successfully.\" -ForegroundColor Green } else { Write-Host \"[-] Error: No 'keystore' object found in app_info.json\" -ForegroundColor Red } } else { Write-Host \"[-] Error: app_info.json not found!\" -ForegroundColor Red }"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-shield"
+              }
+            },
+            {
+              "name": "Generate keystore",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "while IFS=\"=\" read -r k v || [ -n \"$k\" ]; do k=$(echo \"$k\" | tr -d \"\\r \"); v=$(echo \"$v\" | tr -d \"\\r\"); [ -n \"$k\" ] && export \"$k\"=\"$v\"; done < key.properties && keytool -genkeypair -v -keystore \"$storeFile\" -alias \"$keyAlias\" -keyalg RSA -keysize 2048 -validity 10000 -storepass \"$storePassword\" -keypass \"$keyPassword\" -dname \"CN=$CN, OU=$OU, O=$O, L=$L, ST=$ST, C=$C\" && echo \"Keystore created successfully.\""
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$cfg = @{}; Get-Content key.properties | ForEach-Object { $line = $_.Trim(); if ($line -and !$line.StartsWith(\"#\")) { $k,$v = $line.Split(\"=\",2); $cfg[$k.Trim()] = $v.Trim() } }; keytool -genkeypair -v -keystore $cfg[\"storeFile\"] -alias $cfg[\"keyAlias\"] -keyalg RSA -keysize 2048 -validity 10000 -storepass $cfg[\"storePassword\"] -keypass $cfg[\"keyPassword\"] -dname \"CN=$($cfg[\"CN\"]), OU=$($cfg[\"OU\"]), O=$($cfg[\"O\"]), L=$($cfg[\"L\"]), ST=$($cfg[\"ST\"]), C=$($cfg[\"C\"])\"; Write-Host \"Keystore created successfully.\""
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "$cfg = @{}; Get-Content key.properties | ForEach-Object { $line = $_.Trim(); if ($line -and !$line.StartsWith(\"#\")) { $k,$v = $line.Split(\"=\",2); $cfg[$k.Trim()] = $v.Trim() } }; keytool -genkeypair -v -keystore $cfg[\"storeFile\"] -alias $cfg[\"keyAlias\"] -keyalg RSA -keysize 2048 -validity 10000 -storepass $cfg[\"storePassword\"] -keypass $cfg[\"keyPassword\"] -dname \"CN=$($cfg[\"CN\"]), OU=$($cfg[\"OU\"]), O=$($cfg[\"O\"]), L=$($cfg[\"L\"]), ST=$($cfg[\"ST\"]), C=$($cfg[\"C\"])\"; Write-Host \"Keystore created successfully.\""
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-shield-halved"
+              }
+            },
+            {
+              "name": "Link keystore to Android",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "mkdir -p android && sed \"s|^storeFile=\\(.*\\)|storeFile=../\\1|\" key.properties > android/key.properties && python3 -c 'import os, re; bg=\"android/app/build.gradle\"; (lambda c: open(bg,\"w\").write(\"def keystoreProperties = new Properties()\\ndef keystorePropertiesFile = rootProject.file(\\\"key.properties\\\")\\nif (keystorePropertiesFile.exists()) {\\n    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))\\n}\\n\\n\" + re.sub(r\"buildTypes\\s*\\{\", \"signingConfigs {\\n        release {\\n            keyAlias = keystoreProperties[\\\"keyAlias\\\"]\\n            keyPassword = keystoreProperties[\\\"keyPassword\\\"]\\n            storeFile = keystoreProperties[\\\"storeFile\\\"] ? file(keystoreProperties[\\\"storeFile\\\"]) : null\\n            storePassword = keystoreProperties[\\\"storePassword\\\"]\\n        }\\n    }\\n\\n    buildTypes {\", re.sub(r\"signingConfig\\s*=\\s*signingConfigs\\.debug\", \"signingConfig = signingConfigs.release\", c))) if os.path.exists(bg) and \"keystoreProperties\" not in c else None)(open(bg).read() if os.path.exists(bg) else \"\")' && echo \"Keystore fully linked to Android successfully!\""
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "if (!(Test-Path android)) { mkdir android | Out-Null }; (Get-Content key.properties) -replace '^storeFile=(.*)', 'storeFile=../$1' | Set-Content android/key.properties; $bg='android/app/build.gradle'; if (Test-Path $bg) { $c = Get-Content $bg -Raw; if ($c -notmatch 'keystoreProperties') { $hdr=\"def keystoreProperties = new Properties()`ndef keystorePropertiesFile = rootProject.file('key.properties')`nif (keystorePropertiesFile.exists()) {`n    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))`n}`n`n\"; $sc=\"`n    signingConfigs {`n        release {`n            keyAlias = keystoreProperties['keyAlias']`n            keyPassword = keystoreProperties['keyPassword']`n            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null`n            storePassword = keystoreProperties['storePassword']`n        }`n    }`n\"; $c = $hdr + ($c -replace 'buildTypes\\s*\\{', ($sc + '    buildTypes {') -replace 'signingConfig\\s*=\\s*signingConfigs\\.debug', 'signingConfig = signingConfigs.release'); Set-Content $bg -Value $c; Write-Host 'build.gradle configured successfully.' } }; Write-Host 'Keystore fully linked to Android successfully!'"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "if (!(Test-Path android)) { mkdir android | Out-Null }; (Get-Content key.properties) -replace '^storeFile=(.*)', 'storeFile=../$1' | Set-Content android/key.properties; $bg='android/app/build.gradle'; if (Test-Path $bg) { $c = Get-Content $bg -Raw; if ($c -notmatch 'keystoreProperties') { $hdr=\"def keystoreProperties = new Properties()`ndef keystorePropertiesFile = rootProject.file('key.properties')`nif (keystorePropertiesFile.exists()) {`n    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))`n}`n`n\"; $sc=\"`n    signingConfigs {`n        release {`n            keyAlias = keystoreProperties['keyAlias']`n            keyPassword = keystoreProperties['keyPassword']`n            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null`n            storePassword = keystoreProperties['storePassword']`n        }`n    }`n\"; $c = $hdr + ($c -replace 'buildTypes\\s*\\{', ($sc + '    buildTypes {') -replace 'signingConfig\\s*=\\s*signingConfigs\\.debug', 'signingConfig = signingConfigs.release'); Set-Content $bg -Value $c; Write-Host 'build.gradle configured successfully.' } }; Write-Host 'Keystore fully linked to Android successfully!'"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-link"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-key",
+            "color": "#91A4AE"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Nodejs",
+      "commands": [],
+      "folders": [
+        {
+          "name": "General",
+          "commands": [
+            {
+              "name": "Init (package.json)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm init -y"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-circle-plus",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Install all (npm i)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm install"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-npm",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Install package",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm i ${package}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-box-archive",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "package",
+                  "prompt": "أدخل اسم حزمة NPM المراد تثبيتها (مثال: axios express)",
+                  "default": "axios"
+                }
+              ]
+            },
+            {
+              "name": "Install dev package",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm i -D ${package}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-toolbox",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "package",
+                  "prompt": "أدخل اسم حزمة التطوير NPM Dev (مثال: typescript @types/node)",
+                  "default": "typescript"
+                }
+              ]
+            },
+            {
+              "name": "Uninstall package",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm uninstall ${package}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-trash",
+                "color": "#c1121f"
+              },
+              "variables": [
+                {
+                  "key": "package",
+                  "prompt": "أدخل اسم الحزمة المراد إزالتها (NPM Uninstall)"
+                }
+              ]
+            },
+            {
+              "name": "Check outdated",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip list --outdated"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-clock-rotate-left",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Update packages",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm update"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-circle-arrow-up",
+                "color": "#66BB6A"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-terminal",
+            "color": "#91A4AE"
+          }
+        },
+        {
+          "name": "Create App",
+          "commands": [
+            {
+              "name": "Next js",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npx create-next-app@latest"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-react",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "React js (Vite)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm create vite@latest"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-react",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Astro",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm create astro@latest"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-solid fa-rocket",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Vue js",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm create vue@latest"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-vuejs",
+                "color": "#41B883"
+              }
+            },
+            {
+              "name": "Quasar",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm init quasar"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cubes"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-folder-plus",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Run & Dev",
+          "commands": [
+            {
+              "name": "Dev (npm run dev)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm run dev"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-code",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Start (npm start)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm start"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-play",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Preview (npm run preview)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm run preview"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-magnifying-glass",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Quasar dev",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npx quasar dev"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cubes"
+              }
+            },
+            {
+              "name": "Astro dev",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npx astro dev"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-rocket"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-play",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Build",
+          "commands": [
+            {
+              "name": "Build (npm run build)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npm run build"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-bug",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Astro build",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npx astro build"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-regular fa-rocket",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Quasar build (SPA)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npx quasar build"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cubes"
+              }
+            },
+            {
+              "name": "Quasar build (PWA)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npx quasar build -m pwa"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cubes"
+              }
+            },
+            {
+              "name": "Quasar build (Electron)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "npx quasar build -m electron"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cubes"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-bug",
+            "color": "#0077b6"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Python",
+      "commands": [],
+      "folders": [
+        {
+          "name": "Venv (Virtual Env)",
+          "commands": [
+            {
+              "name": "Create venv (.venv)",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "python3 -m venv .venv"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "python -m venv .venv"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-folder-plus",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Activate venv",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "source .venv/bin/activate"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "source .venv/bin/activate.fish"
+                  ],
+                  "shells": [
+                    "Fish"
+                  ]
+                },
+                {
+                  "commands": [
+                    ".\\.venv\\Scripts\\Activate.ps1"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    ".\\.venv\\Scripts\\activate.bat"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-toggle-on",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Deactivate venv",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "deactivate"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-toggle-on",
+                "color": "#c1121f"
+              }
+            },
+            {
+              "name": "Delete .venv folder",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "rm -rf .venv"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "Remove-Item -Recurse -Force .venv"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "rmdir /s /q .venv"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-trash-can",
+                "color": "#c1121f"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-box"
+          }
+        },
+        {
+          "name": "Pip & Libraries",
+          "commands": [
+            {
+              "name": "Install requirements.txt",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip install -r requirements.txt"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-arrow-down",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Install library",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip install ${library}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-download",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "library",
+                  "prompt": "أدخل اسم مكتبة بايثون (مثال: requests pandas)",
+                  "default": "requests"
+                }
+              ]
+            },
+            {
+              "name": "Upgrade library",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip install --upgrade ${library}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-arrow-up",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "library",
+                  "prompt": "أدخل اسم المكتبة المراد ترقيتها في بايثون",
+                  "default": "requests"
+                }
+              ]
+            },
+            {
+              "name": "Upgrade pip",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "python3 -m pip install --upgrade pip"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "python -m pip install --upgrade pip"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-circle-arrow-up",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Freeze requirements.txt",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip freeze > requirements.txt"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-export"
+              }
+            },
+            {
+              "name": "Uninstall library",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip uninstall ${library} -y"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-download",
+                "color": "#c1121f"
+              },
+              "variables": [
+                {
+                  "key": "library",
+                  "prompt": "أدخل اسم المكتبة المراد إزالتها"
+                }
+              ]
+            },
+            {
+              "name": "List installed",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip list"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-download",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Check outdated",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "pip list --outdated"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-clock-rotate-left",
+                "color": "#0077b6"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-boxes-packing"
+          }
+        },
+        {
+          "name": "Run Python",
+          "commands": [
+            {
+              "name": "Run file",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "python3 ${file}"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "python ${file}"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-play",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "file",
+                  "prompt": "أدخل مسار أو اسم ملف بايثون المراد تشغيله",
+                  "default": "main.py"
+                }
+              ]
+            },
+            {
+              "name": "Run main.py",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "python main.py"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-play",
+                "color": "#66BB6A"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-play",
+            "color": "#66BB6A"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Git",
+      "commands": [
+        {
+          "name": "Quick push",
+          "autoRun": true,
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-bolt",
+            "color": "#ffb703"
+          },
+          "commands": [
+            {
+              "commands": [
+                "git add -A",
+                "git commit -m \"update $(date '+%Y-%m-%d %H:%M')\"",
+                "git push origin main"
+              ],
+              "shells": [
+                "Bash",
+                "PowerShell",
+                "Zsh",
+                "Cmd",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "git add -A",
+                "git commit -m \"update $(Get-Date -Format 'yyyy-MM-dd HH:mm')\"",
+                "git push origin main"
+              ],
+              "shells": [
+                "Bash",
+                "PowerShell",
+                "Zsh",
+                "Cmd",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "git add -A",
+                "git commit -m \"update %date% %time%\"",
+                "git push origin main"
+              ],
+              "shells": [
+                "Bash",
+                "PowerShell",
+                "Zsh",
+                "Cmd",
+                "Fish",
+                "Dash"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Quick push with commit",
+          "autoRun": true,
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-bolt",
+            "color": "#ffb703"
+          },
+          "commands": {
+            "commands": [
+              "git add -A",
+              "git commit -m \"${msg}\"",
+              "git push origin main"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "variables": [
+            {
+              "key": "msg",
+              "prompt": "أدخل رسالة الـ Commit لعملية الـ Quick Push",
+              "default": "feat: quick update"
+            }
+          ]
+        },
+        {
+          "name": "Install Github CLI",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "winget install --id GitHub.cli"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-brands fa-github",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Set Email",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git config --global user.email \" ${email}\""
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-envelope",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "email"
+            }
+          ]
+        },
+        {
+          "name": "Set Username",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git config --global user.name \" ${username}\""
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-user",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "username"
+            }
+          ]
+        },
+        {
+          "name": "Github Login",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "gh auth login"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-right-to-bracket",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Init",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git init"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-commit",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Remote add",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git remote add origin ${url}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-commit",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "url"
+            }
+          ]
+        },
+        {
+          "name": "Remote",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git remote set-url origin ${url}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-commit",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "url"
+            }
+          ]
+        },
+        {
+          "name": "Clone",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git clone ${repoUrl}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-clone",
+            "color": "#66BB6A"
+          },
+          "variables": [
+            {
+              "key": "repoUrl",
+              "prompt": "أدخل رابط مستودع Git (Clone URL)",
+              "default": "https://github.com/username/repo.git"
+            }
+          ]
+        },
+        {
+          "name": "Add",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git add ${file}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-plus",
+            "color": "#66BB6A"
+          },
+          "variables": [
+            {
+              "key": "file"
+            }
+          ]
+        },
+        {
+          "name": "Add all",
+          "autoRun": true,
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-plus",
+            "color": "#66BB6A"
+          },
+          "commands": {
+            "commands": [
+              "git add -A"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          }
+        },
+        {
+          "name": "Quick commit with date",
+          "autoRun": true,
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-commit",
+            "color": "#0077b6"
+          },
+          "commands": [
+            {
+              "commands": [
+                "git commit -m \"update $(date '+%Y-%m-%d %H:%M')\""
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "git commit -m \"update $(Get-Date -Format 'yyyy-MM-dd HH:mm')\""
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "git commit -m \"update %date% %time%\""
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Commit",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git commit -m \"${msg}\""
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-commit",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "msg",
+              "prompt": "أدخل رسالة الـ Commit",
+              "default": "feat: update code"
+            }
+          ]
+        },
+        {
+          "name": "Push",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git push origin main"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-cloud-arrow-up",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Pull",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git pull origin main"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-cloud-arrow-down",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Status",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git status"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-branch",
+            "color": "#ffb703"
+          }
+        },
+        {
+          "name": "Change Branch",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git branch -M ${branch}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-branch",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "branch"
+            }
+          ]
+        },
+        {
+          "name": "Branch main",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "git branch -M main"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-branch",
+            "color": "#0077b6"
+          }
+        }
+      ],
+      "folders": []
+    },
+    {
+      "name": "Docker",
+      "commands": [
+        {
+          "name": "Up all",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose up -d"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-angles-up",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Up container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose up ${service}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-chevron-up",
+            "color": "#66BB6A"
+          },
+          "variables": [
+            {
+              "key": "service",
+              "prompt": "أدخل اسم الخدمة أو الحاوية لعمل (up)",
+              "default": "web"
+            }
+          ]
+        },
+        {
+          "name": "Down all",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose down"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-angles-down",
+            "color": "#c1121f"
+          }
+        },
+        {
+          "name": "Down container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose down ${service}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-chevron-down",
+            "color": "#c1121f"
+          },
+          "variables": [
+            {
+              "key": "service",
+              "prompt": "أدخل اسم الخدمة أو الحاوية لعمل (down)",
+              "default": "web"
+            }
+          ]
+        },
+        {
+          "name": "Build all",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose build"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-bug",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Build container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose build ${service}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-bug",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "service",
+              "prompt": "أدخل اسم الخدمة أو الحاوية لعمل (build)",
+              "default": "web"
+            }
+          ]
+        },
+        {
+          "name": "Start all",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose start"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-play",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Start container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose start ${service}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-play",
+            "color": "#66BB6A"
+          },
+          "variables": [
+            {
+              "key": "service",
+              "prompt": "أدخل اسم الخدمة أو الحاوية لعمل (start)",
+              "default": "web"
+            }
+          ]
+        },
+        {
+          "name": "Restart all",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose restart"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-arrow-rotate-right",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Restart container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose restart ${service}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-arrow-rotate-right",
+            "color": "#0077b6"
+          },
+          "variables": [
+            {
+              "key": "service",
+              "prompt": "أدخل اسم الخدمة أو الحاوية لعمل (restart)",
+              "default": "web"
+            }
+          ]
+        },
+        {
+          "name": "Stop all",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose stop"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-stop",
+            "color": "#c1121f"
+          }
+        },
+        {
+          "name": "Stop container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose stop ${service}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-stop",
+            "color": "#c1121f"
+          },
+          "variables": [
+            {
+              "key": "service",
+              "prompt": "أدخل اسم الخدمة أو الحاوية لعمل (stop)",
+              "default": "web"
+            }
+          ]
+        },
+        {
+          "name": "Logs all",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose logs"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-terminal"
+          }
+        },
+        {
+          "name": "Logs container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker compose logs ${service}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-terminal"
+          },
+          "variables": [
+            {
+              "key": "service",
+              "prompt": "أدخل اسم الخدمة أو الحاوية لعمل (logs)",
+              "default": "web"
+            }
+          ]
+        },
+        {
+          "name": "Delete all images - containers - volumes",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "docker compose down -v --rmi all",
+                "docker system prune -a --volumes -f"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "docker compose down -v --rmi all | docker system prune -a --volumes -f"
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "docker compose down -v --rmi all | docker system prune -a --volumes -f"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-trash-can",
+            "color": "#c1121f"
+          }
+        },
+        {
+          "name": "Delete all images",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker rmi $(docker images -aq) -f"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-trash-can",
+            "color": "#c1121f"
+          }
+        },
+        {
+          "name": "Delete image",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker rmi ${image}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-trash-can",
+            "color": "#c1121f"
+          },
+          "variables": [
+            {
+              "key": "image",
+              "prompt": "أدخل اسم أو معرف الصورة (Image ID/Name)"
+            }
+          ]
+        },
+        {
+          "name": "Delete all containers",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker rm $(docker ps -aq) -f"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-trash-can",
+            "color": "#c1121f"
+          }
+        },
+        {
+          "name": "Delete container",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker rm ${container} -f"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-trash",
+            "color": "#c1121f"
+          },
+          "variables": [
+            {
+              "key": "container",
+              "prompt": "أدخل اسم أو معرف الحاوية (Container ID/Name)"
+            }
+          ]
+        },
+        {
+          "name": "Delete all volumes",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker volume prune -f"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-trash-can",
+            "color": "#c1121f"
+          }
+        },
+        {
+          "name": "Delete volume",
+          "autoRun": true,
+          "commands": {
+            "commands": [
+              "docker volume rm ${volume}"
+            ],
+            "shells": [
+              "Bash",
+              "PowerShell",
+              "Zsh",
+              "Cmd",
+              "Fish",
+              "Dash"
+            ]
+          },
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-trash-can",
+            "color": "#c1121f"
+          },
+          "variables": [
+            {
+              "key": "volume",
+              "prompt": "أدخل اسم الـ Volume"
+            }
+          ]
+        }
+      ],
+      "folders": []
+    },
+    {
+      "name": "Environment",
+      "commands": [
+        {
+          "name": "Make scripts executable",
+          "autoRun": true,
+          "commands": [
+            {
+              "commands": [
+                "chmod +x backup.sh backup-local.sh"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            }
+          ],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-terminal"
+          }
+        }
+      ],
+      "folders": [
+        {
+          "name": "Cloud Backup",
+          "commands": [
+            {
+              "name": "Interactive Menu",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-terminal"
+              }
+            },
+            {
+              "name": "Sync All",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh sync-all"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-up",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Sync NPM",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh sync-npm"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-up",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Sync MySQL (All)",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh sync-mysql"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-up",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Sync MySQL (DB)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "./backup.sh sync-mysql-db ${dbName}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-up",
+                "color": "#0077b6"
+              },
+              "variables": [
+                {
+                  "key": "dbName",
+                  "prompt": "أدخل اسم قاعدة البيانات (Database Name)",
+                  "default": "my_database"
+                }
+              ]
+            },
+            {
+              "name": "Sync Agent",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh sync-agent"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-up",
+                "color": "#0077b6"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-cloud-arrow-up",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Cloud Restore",
+          "commands": [
+            {
+              "name": "Restore All",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh restore-all"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-down",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Restore NPM",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh restore-npm"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-down",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Restore MySQL (All)",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh restore-mysql"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-down",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Restore MySQL (DB)",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "./backup.sh restore-mysql-db ${dbName}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-down",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "dbName",
+                  "prompt": "أدخل اسم قاعدة البيانات (Database Name)",
+                  "default": "my_database"
+                }
+              ]
+            },
+            {
+              "name": "Restore Agent",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup.sh restore-agent"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-cloud-arrow-down",
+                "color": "#66BB6A"
+              }
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-cloud-arrow-down",
+            "color": "#66BB6A"
+          }
+        },
+        {
+          "name": "Local Backup",
+          "commands": [
+            {
+              "name": "Backup All / Menu",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup-local.sh"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-clone",
+                "color": "#0077b6"
+              }
+            },
+            {
+              "name": "Backup Single DB",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "./backup-local.sh ${dbName}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-clone",
+                "color": "#0077b6"
+              },
+              "variables": [
+                {
+                  "key": "dbName",
+                  "prompt": "أدخل اسم قاعدة البيانات (Database Name)",
+                  "default": "my_database"
+                }
+              ]
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-clone",
+            "color": "#0077b6"
+          }
+        },
+        {
+          "name": "Local Restore",
+          "commands": [
+            {
+              "name": "Restore All DBs",
+              "autoRun": true,
+              "commands": [
+                {
+                  "commands": [
+                    "./backup-local.sh restore-all"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ],
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-arrow-rotate-left",
+                "color": "#66BB6A"
+              }
+            },
+            {
+              "name": "Restore Single DB",
+              "autoRun": true,
+              "commands": {
+                "commands": [
+                  "./backup-local.sh restore-db ${dbName}"
+                ],
+                "shells": [
+                  "Bash",
+                  "PowerShell",
+                  "Zsh",
+                  "Cmd",
+                  "Fish",
+                  "Dash"
+                ]
+              },
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-arrow-rotate-left",
+                "color": "#66BB6A"
+              },
+              "variables": [
+                {
+                  "key": "dbName",
+                  "prompt": "أدخل اسم قاعدة البيانات (Database Name)",
+                  "default": "my_database"
+                }
+              ]
+            }
+          ],
+          "folders": [],
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-arrow-rotate-left",
+            "color": "#66BB6A"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scripts",
+      "commands": [],
+      "folders": []
+    }
+  ]
+}
