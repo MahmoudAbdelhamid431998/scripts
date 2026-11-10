@@ -2165,7 +2165,67 @@
               "commands": [
                 {
                   "commands": [
-                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-sha"
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-link"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-link"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Add keystore info to .env",
+              "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-link"
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-info-to-env"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-info-to-env"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Keysore info",
+              "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-terminal"
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-info"
                   ],
                   "shells": [
                     "Bash",
@@ -2178,7 +2238,7 @@
                 },
                 {
                   "commands": [
-                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-sha"
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-info"
                   ],
                   "shells": [
                     "Bash",

@@ -3,7 +3,7 @@ import 'dart:io';
 void main(List<String> arguments) async {
   if (arguments.isEmpty) {
     print(
-      '[ERROR] No command provided. Use: env, apply-all, apply-name, apply-icon, apply-bundle, keystore-properties, keystore, keystore-link, keystore-info, keystore-sha, copy-all, copy-apk, copy-aab, copy-ios, copy-windows, copy-linux, copy-macos, copy-web',
+      '[ERROR] No command provided. Use: env, apply-all, apply-name, apply-icon, apply-bundle, keystore-properties, keystore, keystore-link, keystore-info, keystore-info-to-env, copy-all, copy-apk, copy-aab, copy-ios, copy-windows, copy-linux, copy-macos, copy-web',
     );
     return;
   }
@@ -41,8 +41,8 @@ void main(List<String> arguments) async {
     case 'keystore-info':
       _showKeystoreInfo(env);
       break;
-    case 'keystore-sha':
-      _updateKeystoreSha(env);
+    case 'keystore-info-to-env':
+      _updateKeystoreInfoToEnv(env);
       break;
     case 'copy-all':
       _copyArtifacts(env, 'all');
@@ -131,6 +131,9 @@ KEYSTORE_PATH="android/app/upload-keystore.jks"
 VALIDITY="10000"
 SHA1=""
 SHA256=""
+SERIAL_NUMBER=""
+CREATION_DATE=""
+EXPIRE_DATE=""
 ''';
   File('.env').writeAsStringSync(content);
   print('[OK] Created default .env template successfully.');
@@ -184,15 +187,25 @@ Future<void> _applyBundle(Map<String, String> env) async {
   }
   print('[INFO] Applying App Bundle: $bundle');
 
-  final gradle = File('android/app/build.gradle');
-  if (gradle.existsSync()) {
-    var content = gradle.readAsStringSync();
+  File? gradleFile;
+  if (File('android/app/build.gradle.kts').existsSync()) {
+    gradleFile = File('android/app/build.gradle.kts');
+  } else if (File('android/app/build.gradle').existsSync()) {
+    gradleFile = File('android/app/build.gradle');
+  }
+
+  if (gradleFile != null && gradleFile.existsSync()) {
+    var content = gradleFile.readAsStringSync();
+    content = content.replaceAll(
+      RegExp(r'applicationId\s*=\s*"[^"]+"'),
+      'applicationId = "$bundle"',
+    );
     content = content.replaceAll(
       RegExp(r'applicationId\s+"[^"]+"'),
       'applicationId "$bundle"',
     );
-    gradle.writeAsStringSync(content);
-    print('[OK] Updated Android applicationId.');
+    gradleFile.writeAsStringSync(content);
+    print('[OK] Updated Android applicationId in ${gradleFile.path}');
   }
 
   final pbx = File('ios/Runner.xcodeproj/project.pbxproj');
@@ -314,17 +327,35 @@ void _generateKeystore(Map<String, String> env) {
 }
 
 void _linkKeystore(Map<String, String> env) {
-  print('[INFO] Linking Keystore to android/app/build.gradle...');
-  final gradleFile = File('android/app/build.gradle');
-  if (!gradleFile.existsSync()) {
-    print('[ERROR] android/app/build.gradle not found.');
+  print('[INFO] Linking Keystore to Android configuration...');
+
+  File? gradleFile;
+  if (File('android/app/build.gradle.kts').existsSync()) {
+    gradleFile = File('android/app/build.gradle.kts');
+  } else if (File('android/app/build.gradle').existsSync()) {
+    gradleFile = File('android/app/build.gradle');
+  }
+
+  if (gradleFile == null || !gradleFile.existsSync()) {
+    print(
+      '[ERROR] Neither build.gradle nor build.gradle.kts found in android/app/.',
+    );
     return;
   }
 
   var content = gradleFile.readAsStringSync();
+  final isKotlinDsl = gradleFile.path.endsWith('.kts');
 
-  if (!content.contains('keyProperties.load')) {
-    final keystoreLoadBlock = '''
+  if (!content.contains('keyProperties')) {
+    final keystoreLoadBlock = isKotlinDsl
+        ? '''
+val keystoreProperties = java.util.Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    java.io.FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
+}
+'''
+        : '''
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -332,11 +363,24 @@ if (keystorePropertiesFile.exists()) {
 }
 ''';
     content = keystoreLoadBlock + '\n' + content;
-    print('[OK] Added keystoreProperties loader to build.gradle.');
+    print('[OK] Added keystoreProperties loader.');
   }
 
   if (!content.contains('signingConfigs')) {
-    final signingConfigBlock = '''
+    final signingConfigBlock = isKotlinDsl
+        ? '''
+    signingConfigs {
+        create("release") {
+            if (keystoreProperties.getProperty("storeFile") != null) {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+'''
+        : '''
     signingConfigs {
         release {
             if (keystoreProperties.getProperty('storeFile') != null) {
@@ -348,6 +392,7 @@ if (keystorePropertiesFile.exists()) {
         }
     }
 ''';
+
     if (content.contains('android {')) {
       content = content.replaceFirst(
         'android {',
@@ -358,17 +403,19 @@ if (keystorePropertiesFile.exists()) {
   }
 
   if (content.contains('buildTypes {') || content.contains('buildTypes{')) {
-    if (!content.contains('signingConfig signingConfigs.release')) {
+    if (!content.contains('signingConfig')) {
       content = content.replaceAll(
         RegExp(r'release\s*\{', multiLine: true),
-        'release {\n\t\t\tsigningConfig signingConfigs.release',
+        isKotlinDsl
+            ? 'release {\n            signingConfig = signingConfigs.getByName("release")'
+            : 'release {\n\t\t\tsigningConfig signingConfigs.release',
       );
-      print('[OK] Linked release build type to signingConfigs.release.');
+      print('[OK] Linked release build type to signingConfig.');
     }
   }
 
   gradleFile.writeAsStringSync(content);
-  print('[OK] Keystore linked successfully to android/app/build.gradle.');
+  print('[OK] Keystore linked successfully to ${gradleFile.path}.');
 }
 
 void _showKeystoreInfo(Map<String, String> env) {
@@ -400,7 +447,7 @@ void _showKeystoreInfo(Map<String, String> env) {
   }
 }
 
-void _updateKeystoreSha(Map<String, String> env) {
+void _updateKeystoreInfoToEnv(Map<String, String> env) {
   final path = env['KEYSTORE_PATH'] ?? 'android/app/upload-keystore.jks';
   final storePass = env['STORE_PASSWORD'] ?? 'password123';
   final alias = env['KEY_ALIAS'] ?? 'upload';
@@ -410,7 +457,7 @@ void _updateKeystoreSha(Map<String, String> env) {
     return;
   }
 
-  print('[INFO] Extracting SHA1 and SHA256 from keystore...');
+  print('[INFO] Extracting full details from keystore...');
   final res = Process.runSync('keytool', [
     '-list',
     '-v',
@@ -430,12 +477,27 @@ void _updateKeystoreSha(Map<String, String> env) {
   String output = res.stdout.toString();
   String sha1 = '';
   String sha256 = '';
+  String serialNumber = '';
+  String creationDate = '';
+  String expireDate = '';
 
   for (var line in output.split('\n')) {
-    if (line.trim().startsWith('SHA1:')) {
-      sha1 = line.trim().substring(5).trim();
-    } else if (line.trim().startsWith('SHA256:')) {
-      sha256 = line.trim().substring(7).trim();
+    final trimmed = line.trim();
+    if (trimmed.startsWith('SHA1:')) {
+      sha1 = trimmed.substring(5).trim();
+    } else if (trimmed.startsWith('SHA256:')) {
+      sha256 = trimmed.substring(7).trim();
+    } else if (trimmed.startsWith('Serial number:')) {
+      serialNumber = trimmed.substring(14).trim();
+    } else if (trimmed.startsWith('Valid from:')) {
+      // مثال: Valid from: Tue Nov 10 18:00:00 UTC 2026 until...
+      final parts = trimmed.split('until');
+      if (parts.length >= 2) {
+        creationDate = parts[0].replaceFirst('Valid from:', '').trim();
+        expireDate = parts[1].trim();
+      } else {
+        creationDate = trimmed.replaceFirst('Valid from:', '').trim();
+      }
     }
   }
 
@@ -447,26 +509,44 @@ void _updateKeystoreSha(Map<String, String> env) {
 
   var lines = envFile.readAsLinesSync();
   List<String> newLines = [];
-  bool sha1Updated = false;
-  bool sha256Updated = false;
+
+  bool sha1Found = false;
+  bool sha256Found = false;
+  bool serialFound = false;
+  bool creationFound = false;
+  bool expireFound = false;
 
   for (var line in lines) {
     if (line.startsWith('SHA1=')) {
       newLines.add('SHA1="$sha1"');
-      sha1Updated = true;
+      sha1Found = true;
     } else if (line.startsWith('SHA256=')) {
       newLines.add('SHA256="$sha256"');
-      sha256Updated = true;
+      sha256Found = true;
+    } else if (line.startsWith('SERIAL_NUMBER=')) {
+      newLines.add('SERIAL_NUMBER="$serialNumber"');
+      serialFound = true;
+    } else if (line.startsWith('CREATION_DATE=')) {
+      newLines.add('CREATION_DATE="$creationDate"');
+      creationFound = true;
+    } else if (line.startsWith('EXPIRE_DATE=')) {
+      newLines.add('EXPIRE_DATE="$expireDate"');
+      expireFound = true;
     } else {
       newLines.add(line);
     }
   }
 
-  if (!sha1Updated) newLines.add('SHA1="$sha1"');
-  if (!sha256Updated) newLines.add('SHA256="$sha256"');
+  if (!sha1Found) newLines.add('SHA1="$sha1"');
+  if (!sha256Found) newLines.add('SHA256="$sha256"');
+  if (!serialFound) newLines.add('SERIAL_NUMBER="$serialNumber"');
+  if (!creationFound) newLines.add('CREATION_DATE="$creationDate"');
+  if (!expireFound) newLines.add('EXPIRE_DATE="$expireDate"');
 
   envFile.writeAsStringSync(newLines.join('\n') + '\n');
-  print('[OK] Updated .env successfully with SHA1: $sha1 and SHA256: $sha256');
+  print(
+    '[OK] Updated .env successfully with all keystore certificate details.',
+  );
 }
 
 void _copyArtifacts(Map<String, String> env, String type) {
