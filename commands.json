@@ -4792,7 +4792,88 @@
     },
     {
       "name": "Scripts",
-      "commands": [],
+      "commands": [
+        {
+          "name": "Check Updates",
+          "autoRun": true,
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-cloud-arrow-up",
+            "color": "#66BB6A"
+          },
+          "commands": [
+            {
+              "commands": [
+                "cd \"$HOME\\.scripts\"",
+                "bash 'git.sh'"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "cd \"$env:USERPROFILE\\.scripts\"",
+                "./git.ps1"
+              ],
+              "shells": [
+                "PowerShell",
+                "Cmd"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "autoRun": true,
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-cloud-arrow-up",
+            "color": "#66BB6A"
+          },
+          "commands": [
+            {
+              "commands": [
+                "cd \"$HOME\\.scripts\"",
+                "git add -A",
+                "git commit -m \"update $(date '+%Y-%m-%d %H:%M')\"",
+                "git push origin main"
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "cd \"$env:USERPROFILE\\.scripts\"",
+                "git add -A",
+                "git commit -m \"update $(Get-Date -Format 'yyyy-MM-dd HH:mm')\"",
+                "git push origin main"
+              ],
+              "shells": [
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "cd \"$env:USERPROFILE\\.scripts\"",
+                "git add -A",
+                "git commit -m \"update %date% %time%\"",
+                "git push origin main"
+              ],
+              "shells": [
+                "Cmd"
+              ]
+            }
+          ]
+        }
+      ],
       "folders": []
     }
   ]
