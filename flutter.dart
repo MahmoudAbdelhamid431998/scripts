@@ -1,9 +1,41 @@
 import 'dart:io';
 
+class AppColors {
+  static const String reset = '\x1B[0m';
+  static const String green = '\x1B[32m';
+  static const String red = '\x1B[31m';
+  static const String yellow = '\x1B[33m';
+  static const String cyan = '\x1B[36m';
+}
+
+void printMsg(String type, String message) {
+  switch (type) {
+    case 'success':
+      stdout.writeln(
+        '${AppColors.green}[✓] [SUCCESS] $message${AppColors.reset}',
+      );
+      break;
+    case 'error':
+      stdout.writeln('${AppColors.red}[×] [ERROR] $message${AppColors.reset}');
+      break;
+    case 'warning':
+      stdout.writeln(
+        '${AppColors.yellow}[!] [WARNING] $message${AppColors.reset}',
+      );
+      break;
+    case 'info':
+      stdout.writeln('${AppColors.cyan}[i] [INFO] $message${AppColors.reset}');
+      break;
+    default:
+      stdout.writeln(message);
+  }
+}
+
 void main(List<String> arguments) async {
   if (arguments.isEmpty) {
-    print(
-      '[ERROR] No command provided. Use: env, apply-all, apply-name, apply-icon, apply-bundle, keystore-properties, keystore, keystore-link, keystore-info, keystore-info-to-env, copy-all, copy-apk, copy-aab, copy-ios, copy-windows, copy-linux, copy-macos, copy-web',
+    printMsg(
+      'error',
+      'No command provided. Use: env, apply-all, apply-name, apply-icon, apply-bundle, keystore-properties, keystore, keystore-link, keystore-info, keystore-info-to-env, copy-all, copy-apk, copy-aab, copy-ios, copy-windows, copy-linux, copy-macos, copy-web',
     );
     return;
   }
@@ -69,14 +101,17 @@ void main(List<String> arguments) async {
       _copyArtifacts(env, 'web');
       break;
     default:
-      print('[ERROR] Unknown command: $command');
+      printMsg('error', 'Unknown command: $command');
   }
 }
 
 Map<String, String> _loadEnv() {
   final envFile = File('.env');
   if (!envFile.existsSync()) {
-    print('[WARNING] .env file not found in current directory.');
+    printMsg(
+      'warning',
+      '.env file not found in current directory (${Directory.current.path}).',
+    );
     return {};
   }
   final lines = envFile.readAsLinesSync();
@@ -135,8 +170,13 @@ SERIAL_NUMBER=""
 CREATION_DATE=""
 EXPIRE_DATE=""
 ''';
-  File('.env').writeAsStringSync(content);
-  print('[OK] Created default .env template successfully.');
+
+  final file = File('.env');
+  file.writeAsStringSync(content);
+  printMsg(
+    'success',
+    'Created default .env file successfully at: ${file.absolute.path}',
+  );
 }
 
 Future<void> _runFlutter(List<String> args) async {
@@ -149,10 +189,10 @@ Future<void> _runFlutter(List<String> args) async {
 Future<void> _applyName(Map<String, String> env) async {
   final name = env['APP_NAME'];
   if (name == null) {
-    print('[ERROR] APP_NAME not found in .env');
+    printMsg('error', 'APP_NAME not found in .env');
     return;
   }
-  print('[INFO] Applying App Name: $name');
+  printMsg('info', 'Applying App Name: $name');
 
   final androidManifest = File('android/app/src/main/AndroidManifest.xml');
   if (androidManifest.existsSync()) {
@@ -162,7 +202,7 @@ Future<void> _applyName(Map<String, String> env) async {
       'android:label="$name"',
     );
     androidManifest.writeAsStringSync(content);
-    print('[OK] Updated Android app label.');
+    printMsg('success', 'Updated Android app label.');
   }
 
   final infoPlist = File('ios/Runner/Info.plist');
@@ -175,17 +215,17 @@ Future<void> _applyName(Map<String, String> env) async {
       );
     }
     infoPlist.writeAsStringSync(content);
-    print('[OK] Updated iOS app display name.');
+    printMsg('success', 'Updated iOS app display name.');
   }
 }
 
 Future<void> _applyBundle(Map<String, String> env) async {
   final bundle = env['APP_BUNDLE'];
   if (bundle == null) {
-    print('[ERROR] APP_BUNDLE not found in .env');
+    printMsg('error', 'APP_BUNDLE not found in .env');
     return;
   }
-  print('[INFO] Applying App Bundle: $bundle');
+  printMsg('info', 'Applying App Bundle across all project files: $bundle');
 
   File? gradleFile;
   if (File('android/app/build.gradle.kts').existsSync()) {
@@ -205,39 +245,87 @@ Future<void> _applyBundle(Map<String, String> env) async {
       'applicationId "$bundle"',
     );
     gradleFile.writeAsStringSync(content);
-    print('[OK] Updated Android applicationId in ${gradleFile.path}');
+    printMsg('success', 'Updated Android applicationId in ${gradleFile.path}');
   }
 
-  final pbx = File('ios/Runner.xcodeproj/project.pbxproj');
-  if (pbx.existsSync()) {
-    var content = pbx.readAsStringSync();
+  final manifestFile = File('android/app/src/main/AndroidManifest.xml');
+  if (manifestFile.existsSync()) {
+    var content = manifestFile.readAsStringSync();
+    content = content.replaceAll(
+      RegExp(r'package="[^"]*"'),
+      'package="$bundle"',
+    );
+    manifestFile.writeAsStringSync(content);
+    printMsg('success', 'Updated package in AndroidManifest.xml');
+  }
+
+  final pbxFile = File('ios/Runner.xcodeproj/project.pbxproj');
+  if (pbxFile.existsSync()) {
+    var content = pbxFile.readAsStringSync();
     content = content.replaceAll(
       RegExp(r'PRODUCT_BUNDLE_IDENTIFIER = [^;]+;'),
       'PRODUCT_BUNDLE_IDENTIFIER = $bundle;',
     );
-    pbx.writeAsStringSync(content);
-    print('[OK] Updated iOS Bundle Identifier.');
+    pbxFile.writeAsStringSync(content);
+    printMsg('success', 'Updated iOS Bundle Identifier in project.pbxproj');
+  }
+
+  final infoPlistFile = File('ios/Runner/Info.plist');
+  if (infoPlistFile.existsSync()) {
+    var content = infoPlistFile.readAsStringSync();
+    content = content.replaceAll(
+      RegExp(r'<key>CFBundleIdentifier</key>\s*<string>[^<]*</string>'),
+      '<key>CFBundleIdentifier</key>\n\t<string>$bundle</string>',
+    );
+    infoPlistFile.writeAsStringSync(content);
+    printMsg('success', 'Updated CFBundleIdentifier in iOS Info.plist');
   }
 }
 
 Future<void> _applyIcon(Map<String, String> env) async {
   final iconPath = env['APP_ICON_PATH'];
   if (iconPath == null || !File(iconPath).existsSync()) {
-    print('[ERROR] Icon path invalid or not found in .env');
+    printMsg('error', 'Icon path invalid or file not found at: $iconPath');
     return;
   }
-  print('[INFO] Applying App Icon from: $iconPath');
+  printMsg('info', 'Applying App Icon from: $iconPath');
 
   final pubspec = File('pubspec.yaml');
-  if (!pubspec.existsSync()) return;
-  var content = pubspec.readAsStringSync();
-
-  if (!content.contains('flutter_launcher_icons')) {
-    await _runFlutter(['pub', 'add', '--dev', 'flutter_launcher_icons']);
+  if (!pubspec.existsSync()) {
+    printMsg('error', 'pubspec.yaml not found.');
+    return;
   }
 
-  final config =
+  String content = pubspec.readAsStringSync();
+
+  if (!content.contains('flutter_launcher_icons:')) {
+    printMsg('info', 'Adding flutter_launcher_icons dependency...');
+    await _runFlutter(['pub', 'add', '--dev', 'flutter_launcher_icons']);
+    content = pubspec.readAsStringSync();
+  }
+
+  if (content.contains('flutter_launcher_icons:')) {
+    int index = content.indexOf('flutter_launcher_icons:');
+    while (index != -1) {
+      String sub = content.substring(0, index);
+      if (sub.contains('dev_dependencies:')) {
+        int nextIndex = content.indexOf('flutter_launcher_icons:', index + 23);
+        if (nextIndex != -1) {
+          content = content.substring(0, nextIndex).trimRight() + '\n';
+          break;
+        } else {
+          break;
+        }
+      } else {
+        content = content.substring(0, index).trimRight() + '\n';
+        break;
+      }
+    }
+  }
+
+  final configBlock =
       '''
+
 flutter_launcher_icons:
   image_path: "$iconPath"
   android: true
@@ -254,12 +342,18 @@ flutter_launcher_icons:
     image_path: "$iconPath"
 ''';
 
-  content = content.trim() + '\n\n' + config;
+  content = content.trim() + '\n' + configBlock;
   pubspec.writeAsStringSync(content);
 
+  printMsg('info', 'Running flutter pub get...');
   await _runFlutter(['pub', 'get']);
+
+  printMsg('info', 'Generating platform icons...');
   await _runFlutter(['pub', 'run', 'flutter_launcher_icons:main']);
-  print('[OK] Icons generated successfully!');
+  printMsg(
+    'success',
+    'Icons applied and generated successfully without duplication.',
+  );
 }
 
 void _createKeystoreProperties(Map<String, String> env) {
@@ -275,7 +369,7 @@ keyAlias=${env['KEY_ALIAS']}
 storeFile=${env['STORE_FILE']}
 ''';
   propFile.writeAsStringSync(content);
-  print('[OK] Created $propPath successfully.');
+  printMsg('success', 'Created $propPath successfully.');
 }
 
 void _generateKeystore(Map<String, String> env) {
@@ -296,6 +390,7 @@ void _generateKeystore(Map<String, String> env) {
 
   File(path).parent.createSync(recursive: true);
 
+  printMsg('info', 'Generating keystore at $path...');
   final res = Process.runSync('keytool', [
     '-genkey',
     '-v',
@@ -318,16 +413,14 @@ void _generateKeystore(Map<String, String> env) {
   ], runInShell: true);
 
   if (res.exitCode == 0) {
-    print(
-      '[OK] Keystore generated successfully at $path with all publisher details.',
-    );
+    printMsg('success', 'Keystore generated successfully at $path');
   } else {
-    print('[ERROR] Error generating keystore: ${res.stderr}');
+    printMsg('error', 'Error generating keystore: ${res.stderr}');
   }
 }
 
 void _linkKeystore(Map<String, String> env) {
-  print('[INFO] Linking Keystore to Android configuration...');
+  printMsg('info', 'Linking Keystore to Android configuration...');
 
   File? gradleFile;
   if (File('android/app/build.gradle.kts').existsSync()) {
@@ -337,8 +430,9 @@ void _linkKeystore(Map<String, String> env) {
   }
 
   if (gradleFile == null || !gradleFile.existsSync()) {
-    print(
-      '[ERROR] Neither build.gradle nor build.gradle.kts found in android/app/.',
+    printMsg(
+      'error',
+      'Neither build.gradle nor build.gradle.kts found in android/app/.',
     );
     return;
   }
@@ -363,7 +457,7 @@ if (keystorePropertiesFile.exists()) {
 }
 ''';
     content = keystoreLoadBlock + '\n' + content;
-    print('[OK] Added keystoreProperties loader.');
+    printMsg('success', 'Added keystoreProperties loader.');
   }
 
   if (!content.contains('signingConfigs')) {
@@ -398,7 +492,7 @@ if (keystorePropertiesFile.exists()) {
         'android {',
         'android {\n' + signingConfigBlock,
       );
-      print('[OK] Injected signingConfigs block.');
+      printMsg('success', 'Injected signingConfigs block.');
     }
   }
 
@@ -410,12 +504,12 @@ if (keystorePropertiesFile.exists()) {
             ? 'release {\n            signingConfig = signingConfigs.getByName("release")'
             : 'release {\n\t\t\tsigningConfig signingConfigs.release',
       );
-      print('[OK] Linked release build type to signingConfig.');
+      printMsg('success', 'Linked release build type to signingConfig.');
     }
   }
 
   gradleFile.writeAsStringSync(content);
-  print('[OK] Keystore linked successfully to ${gradleFile.path}.');
+  printMsg('success', 'Keystore linked successfully to ${gradleFile.path}');
 }
 
 void _showKeystoreInfo(Map<String, String> env) {
@@ -424,11 +518,11 @@ void _showKeystoreInfo(Map<String, String> env) {
   final alias = env['KEY_ALIAS'] ?? 'upload';
 
   if (!File(path).existsSync()) {
-    print('[ERROR] Keystore file not found at $path');
+    printMsg('error', 'Keystore file not found at $path');
     return;
   }
 
-  print('[INFO] Reading Keystore info from $path...');
+  printMsg('info', 'Reading Keystore info from $path...');
   final res = Process.runSync('keytool', [
     '-list',
     '-v',
@@ -441,9 +535,9 @@ void _showKeystoreInfo(Map<String, String> env) {
   ], runInShell: true);
 
   if (res.exitCode == 0) {
-    print(res.stdout);
+    stdout.writeln(res.stdout);
   } else {
-    print('[ERROR] Failed to read keystore info: ${res.stderr}');
+    printMsg('error', 'Failed to read keystore info: ${res.stderr}');
   }
 }
 
@@ -453,11 +547,11 @@ void _updateKeystoreInfoToEnv(Map<String, String> env) {
   final alias = env['KEY_ALIAS'] ?? 'upload';
 
   if (!File(path).existsSync()) {
-    print('[ERROR] Keystore file not found at $path');
+    printMsg('error', 'Keystore file not found at $path');
     return;
   }
 
-  print('[INFO] Extracting full details from keystore...');
+  printMsg('info', 'Extracting full details from keystore...');
   final res = Process.runSync('keytool', [
     '-list',
     '-v',
@@ -470,7 +564,7 @@ void _updateKeystoreInfoToEnv(Map<String, String> env) {
   ], runInShell: true);
 
   if (res.exitCode != 0) {
-    print('[ERROR] Failed to extract certificates: ${res.stderr}');
+    printMsg('error', 'Failed to extract certificates: ${res.stderr}');
     return;
   }
 
@@ -490,7 +584,6 @@ void _updateKeystoreInfoToEnv(Map<String, String> env) {
     } else if (trimmed.startsWith('Serial number:')) {
       serialNumber = trimmed.substring(14).trim();
     } else if (trimmed.startsWith('Valid from:')) {
-      // مثال: Valid from: Tue Nov 10 18:00:00 UTC 2026 until...
       final parts = trimmed.split('until');
       if (parts.length >= 2) {
         creationDate = parts[0].replaceFirst('Valid from:', '').trim();
@@ -503,7 +596,7 @@ void _updateKeystoreInfoToEnv(Map<String, String> env) {
 
   final envFile = File('.env');
   if (!envFile.existsSync()) {
-    print('[ERROR] .env file not found.');
+    printMsg('error', '.env file not found.');
     return;
   }
 
@@ -544,8 +637,9 @@ void _updateKeystoreInfoToEnv(Map<String, String> env) {
   if (!expireFound) newLines.add('EXPIRE_DATE="$expireDate"');
 
   envFile.writeAsStringSync(newLines.join('\n') + '\n');
-  print(
-    '[OK] Updated .env successfully with all keystore certificate details.',
+  printMsg(
+    'success',
+    'Updated .env successfully with all keystore certificate details.',
   );
 }
 
@@ -587,10 +681,10 @@ void _copySingle(String srcPath, String destDir, String appName, String type) {
 
   if (srcFile.existsSync()) {
     srcFile.copySync(destPath);
-    print('[OK] Copied $type to $destPath');
+    printMsg('success', 'Copied $type to $destPath');
   } else if (srcDir.existsSync()) {
-    print('[OK] Found folder for $type at $srcPath');
+    printMsg('success', 'Found folder for $type at $srcPath');
   } else {
-    print('[WARNING] Source for $type not found at $srcPath');
+    printMsg('warning', 'Source for $type not found at $srcPath');
   }
 }
