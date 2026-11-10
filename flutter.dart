@@ -35,7 +35,7 @@ void main(List<String> arguments) async {
   if (arguments.isEmpty) {
     printMsg(
       'error',
-      'No command provided. Use: env, apply-all, apply-name, apply-icon, apply-bundle, keystore-properties, keystore, keystore-link, keystore-info, keystore-info-to-env, copy-all, copy-apk, copy-aab, copy-ios, copy-windows, copy-linux, copy-macos, copy-web',
+      'No command provided. Use: env, apply-all, apply-name, apply-version, apply-bundle, apply-icon, keystore-properties, keystore, keystore-link, keystore-info, keystore-info-to-env, copy-all, copy-apk, copy-aab, copy-ios, copy-windows, copy-linux, copy-macos, copy-web',
     );
     return;
   }
@@ -49,11 +49,15 @@ void main(List<String> arguments) async {
       break;
     case 'apply-all':
       await _applyName(env);
+      await _applyVersion(env);
       await _applyBundle(env);
       await _applyIcon(env);
       break;
     case 'apply-name':
       await _applyName(env);
+      break;
+    case 'apply-version':
+      await _applyVersion(env);
       break;
     case 'apply-bundle':
       await _applyBundle(env);
@@ -179,11 +183,12 @@ EXPIRE_DATE=""
   );
 }
 
-Future<void> _runFlutter(List<String> args) async {
+Future<ProcessResult> _runFlutter(List<String> args) async {
   String exec = Platform.isWindows ? 'flutter.bat' : 'flutter';
   var res = await Process.run(exec, args, runInShell: true);
   stdout.write(res.stdout);
   stderr.write(res.stderr);
+  return res;
 }
 
 Future<void> _applyName(Map<String, String> env) async {
@@ -219,67 +224,198 @@ Future<void> _applyName(Map<String, String> env) async {
   }
 }
 
+Future<void> _applyVersion(Map<String, String> env) async {
+  final version = env['APP_VERSION'];
+  final shortDesc = env['APP_SHORT_DESCRIPTION'];
+
+  if (version == null || version.isEmpty) {
+    printMsg('error', 'APP_VERSION not found in .env');
+    return;
+  }
+  printMsg(
+    'info',
+    'Applying App Version & Short Description to pubspec.yaml...',
+  );
+
+  final pubspec = File('pubspec.yaml');
+  if (!pubspec.existsSync()) {
+    printMsg('error', 'pubspec.yaml not found.');
+    return;
+  }
+
+  var content = pubspec.readAsStringSync();
+
+  if (content.contains(RegExp(r'^version:\s*.*$', multiLine: true))) {
+    content = content.replaceAll(
+      RegExp(r'^version:\s*.*$', multiLine: true),
+      'version: $version',
+    );
+    printMsg('success', 'Updated version in pubspec.yaml to $version');
+  } else {
+    printMsg('warning', 'Could not find version field in pubspec.yaml');
+  }
+
+  if (shortDesc != null && shortDesc.isNotEmpty) {
+    if (content.contains(RegExp(r'^description:\s*.*$', multiLine: true))) {
+      content = content.replaceAll(
+        RegExp(r'^description:\s*.*$', multiLine: true),
+        'description: "$shortDesc"',
+      );
+      printMsg(
+        'success',
+        'Updated description in pubspec.yaml to "$shortDesc"',
+      );
+    } else {
+      printMsg('warning', 'Could not find description field in pubspec.yaml');
+    }
+  }
+
+  pubspec.writeAsStringSync(content);
+}
+
 Future<void> _applyBundle(Map<String, String> env) async {
-  final bundle = env['APP_BUNDLE'];
-  if (bundle == null) {
+  final newBundle = env['APP_BUNDLE'];
+  if (newBundle == null || newBundle.isEmpty) {
     printMsg('error', 'APP_BUNDLE not found in .env');
     return;
   }
-  printMsg('info', 'Applying App Bundle across all project files: $bundle');
 
-  File? gradleFile;
-  if (File('android/app/build.gradle.kts').existsSync()) {
-    gradleFile = File('android/app/build.gradle.kts');
-  } else if (File('android/app/build.gradle').existsSync()) {
-    gradleFile = File('android/app/build.gradle');
+  String oldBundle = _extractCurrentBundleId();
+  if (oldBundle.isNotEmpty) {
+    printMsg('info', 'Current App Bundle ID detected: $oldBundle');
   }
 
+  printMsg('info', 'Adding change_app_package_name dependency...');
+  await _runFlutter(['pub', 'add', '--dev', 'change_app_package_name']);
+
+  printMsg(
+    'info',
+    'Running change_app_package_name package to set new bundle: $newBundle',
+  );
+  var res = await _runFlutter([
+    'pub',
+    'run',
+    'change_app_package_name:main',
+    newBundle,
+  ]);
+
+  if (res.exitCode == 0) {
+    printMsg(
+      'success',
+      'Successfully applied new package via change_app_package_name library.',
+    );
+  } else {
+    printMsg('error', 'Failed to run change_app_package_name package.');
+    return;
+  }
+
+  if (oldBundle.isNotEmpty && oldBundle != newBundle) {
+    printMsg(
+      'info',
+      'Searching project for full bundle "$oldBundle" and replacing with "$newBundle"...',
+    );
+    _replaceInProject(oldBundle, newBundle);
+
+    List<String> oldParts = oldBundle.split('.');
+    List<String> newParts = newBundle.split('.');
+    if (oldParts.length >= 2 && newParts.length >= 2) {
+      String oldPrefix = '${oldParts[0]}.${oldParts[1]}';
+      String newPrefix = '${newParts[0]}.${newParts[1]}';
+
+      if (oldPrefix != newPrefix) {
+        printMsg(
+          'info',
+          'Searching project for prefix "$oldPrefix" and replacing with "$newPrefix"...',
+        );
+        _replaceInProject(oldPrefix, newPrefix);
+      }
+    }
+  }
+
+  printMsg(
+    'success',
+    'App Bundle update completed seamlessly across the entire project!',
+  );
+}
+
+String _extractCurrentBundleId() {
+  File? gradleFile = _findGradleFile();
   if (gradleFile != null && gradleFile.existsSync()) {
-    var content = gradleFile.readAsStringSync();
-    content = content.replaceAll(
-      RegExp(r'applicationId\s*=\s*"[^"]+"'),
-      'applicationId = "$bundle"',
-    );
-    content = content.replaceAll(
-      RegExp(r'applicationId\s+"[^"]+"'),
-      'applicationId "$bundle"',
-    );
-    gradleFile.writeAsStringSync(content);
-    printMsg('success', 'Updated Android applicationId in ${gradleFile.path}');
+    String content = gradleFile.readAsStringSync();
+    RegExp regExp = RegExp(r'applicationId\s*=?\s*"([^"]+)"');
+    Match? match = regExp.firstMatch(content);
+    if (match != null) {
+      return match.group(1) ?? '';
+    }
   }
+  return '';
+}
 
-  final manifestFile = File('android/app/src/main/AndroidManifest.xml');
-  if (manifestFile.existsSync()) {
-    var content = manifestFile.readAsStringSync();
-    content = content.replaceAll(
-      RegExp(r'package="[^"]*"'),
-      'package="$bundle"',
-    );
-    manifestFile.writeAsStringSync(content);
-    printMsg('success', 'Updated package in AndroidManifest.xml');
+File? _findGradleFile() {
+  final possiblePaths = [
+    'android/app/build.gradle.kts',
+    'android/app/build.gradle',
+    'android/build.gradle.kts',
+    'android/build.gradle',
+  ];
+  for (var p in possiblePaths) {
+    if (File(p).existsSync()) {
+      return File(p);
+    }
   }
+  final androidDir = Directory('android');
+  if (androidDir.existsSync()) {
+    for (var entity in androidDir.listSync(recursive: true)) {
+      if (entity is File &&
+          (entity.path.endsWith('build.gradle.kts') ||
+              entity.path.endsWith('build.gradle'))) {
+        if (entity.path.contains('app')) {
+          return entity;
+        }
+      }
+    }
+  }
+  return null;
+}
 
-  final pbxFile = File('ios/Runner.xcodeproj/project.pbxproj');
-  if (pbxFile.existsSync()) {
-    var content = pbxFile.readAsStringSync();
-    content = content.replaceAll(
-      RegExp(r'PRODUCT_BUNDLE_IDENTIFIER = [^;]+;'),
-      'PRODUCT_BUNDLE_IDENTIFIER = $bundle;',
-    );
-    pbxFile.writeAsStringSync(content);
-    printMsg('success', 'Updated iOS Bundle Identifier in project.pbxproj');
-  }
+void _replaceInProject(String fromText, String toText) {
+  final targetDirs = [
+    'android',
+    'ios',
+    'macos',
+    'windows',
+    'linux',
+    'lib',
+    'test',
+  ];
+  int count = 0;
 
-  final infoPlistFile = File('ios/Runner/Info.plist');
-  if (infoPlistFile.existsSync()) {
-    var content = infoPlistFile.readAsStringSync();
-    content = content.replaceAll(
-      RegExp(r'<key>CFBundleIdentifier</key>\s*<string>[^<]*</string>'),
-      '<key>CFBundleIdentifier</key>\n\t<string>$bundle</string>',
-    );
-    infoPlistFile.writeAsStringSync(content);
-    printMsg('success', 'Updated CFBundleIdentifier in iOS Info.plist');
+  for (var dirName in targetDirs) {
+    final dir = Directory(dirName);
+    if (!dir.existsSync()) continue;
+
+    dir.listSync(recursive: true).forEach((entity) {
+      if (entity is File) {
+        if (entity.path.contains('.git') ||
+            entity.path.contains('build/') ||
+            entity.path.contains('.dart_tool/') ||
+            entity.path.endsWith('.png') ||
+            entity.path.endsWith('.jks') ||
+            entity.path.endsWith('.so'))
+          return;
+
+        try {
+          String content = entity.readAsStringSync();
+          if (content.contains(fromText)) {
+            content = content.replaceAll(fromText, toText);
+            entity.writeAsStringSync(content);
+            count++;
+          }
+        } catch (_) {}
+      }
+    });
   }
+  printMsg('success', 'Replaced occurrences of "$fromText" in $count files.');
 }
 
 Future<void> _applyIcon(Map<String, String> env) async {
@@ -420,19 +556,16 @@ void _generateKeystore(Map<String, String> env) {
 }
 
 void _linkKeystore(Map<String, String> env) {
-  printMsg('info', 'Linking Keystore to Android configuration...');
+  printMsg(
+    'info',
+    'Linking Keystore securely following official Gradle Kotlin DSL specs...',
+  );
 
-  File? gradleFile;
-  if (File('android/app/build.gradle.kts').existsSync()) {
-    gradleFile = File('android/app/build.gradle.kts');
-  } else if (File('android/app/build.gradle').existsSync()) {
-    gradleFile = File('android/app/build.gradle');
-  }
-
+  File? gradleFile = _findGradleFile();
   if (gradleFile == null || !gradleFile.existsSync()) {
     printMsg(
       'error',
-      'Neither build.gradle nor build.gradle.kts found in android/app/.',
+      'Could not locate build.gradle or build.gradle.kts anywhere in android/ directory.',
     );
     return;
   }
@@ -440,76 +573,121 @@ void _linkKeystore(Map<String, String> env) {
   var content = gradleFile.readAsStringSync();
   final isKotlinDsl = gradleFile.path.endsWith('.kts');
 
-  if (!content.contains('keyProperties')) {
-    final keystoreLoadBlock = isKotlinDsl
-        ? '''
-val keystoreProperties = java.util.Properties()
+  // 1. التنظيف الشامل لأي أسطر قديمة أو مكررة لـ keystoreProperties لمنع التداخل
+  content = content.replaceAll(
+    RegExp(r'val keystoreProperties =[\s\S]*?\}'),
+    '',
+  );
+  content = content.replaceAll(
+    RegExp(r'def keystoreProperties =[\s\S]*?\}'),
+    '',
+  );
+  content = content.replaceAll(RegExp(r'import java\.util\.Properties\s*'), '');
+  content = content.replaceAll(
+    RegExp(r'import java\.io\.FileInputStream\s*'),
+    '',
+  );
+
+  // 2. إضافة قراءة المفتاح في أعلى الملف بالشكل القياسي الصحيح
+  final keystoreLoadBlock = isKotlinDsl
+      ? '''
+import java.util.Properties
+import java.io.FileInputStream
+
+val keystoreProperties = Properties()
 val keystorePropertiesFile = rootProject.file("key.properties")
 if (keystorePropertiesFile.exists()) {
-    java.io.FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
+    FileInputStream(keystorePropertiesFile).use { stream ->
+        keystoreProperties.load(stream)
+    }
 }
 '''
-        : '''
+      : '''
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 ''';
-    content = keystoreLoadBlock + '\n' + content;
-    printMsg('success', 'Added keystoreProperties loader.');
-  }
+  content = keystoreLoadBlock + '\n' + content;
+  printMsg(
+    'success',
+    'Injected clean keystoreProperties loader at the top of gradle file.',
+  );
 
-  if (!content.contains('signingConfigs')) {
-    final signingConfigBlock = isKotlinDsl
-        ? '''
+  // 3. إزالة أي كتل signingConfigs أو ربط release قديمة لتجنب تكرارها أو تشويه البنية
+  content = content.replaceAll(
+    RegExp(r'signingConfigs\s*\{[\s\S]*?\}', multiLine: true),
+    '',
+  );
+
+  // 4. حقن signingConfigs بدقة مباشرة داخل كتلة android {
+  final signingConfigBlock = isKotlinDsl
+      ? '''
     signingConfigs {
         create("release") {
-            if (keystoreProperties.getProperty("storeFile") != null) {
-                storeFile = file(keystoreProperties.getProperty("storeFile"))
-                storePassword = keystoreProperties.getProperty("storePassword")
-                keyAlias = keystoreProperties.getProperty("keyAlias")
-                keyPassword = keystoreProperties.getProperty("keyPassword")
-            }
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = keystoreProperties.getProperty("storeFile")?.let { rootProject.file(it) }
+            storePassword = keystoreProperties.getProperty("storePassword")
         }
     }
 '''
-        : '''
+      : '''
     signingConfigs {
         release {
-            if (keystoreProperties.getProperty('storeFile') != null) {
-                storeFile file(keystoreProperties.getProperty('storeFile'))
-                storePassword keystoreProperties.getProperty('storePassword')
-                keyAlias keystoreProperties.getProperty('keyAlias')
-                keyPassword keystoreProperties.getProperty('keyPassword')
-            }
+            keyAlias keystoreProperties.getProperty('keyAlias')
+            keyPassword keystoreProperties.getProperty('keyPassword')
+            storeFile keystoreProperties.getProperty('storeFile') ? rootProject.file(keystoreProperties.getProperty('storeFile')) : null
+            storePassword keystoreProperties.getProperty('storePassword')
         }
     }
 ''';
 
-    if (content.contains('android {')) {
-      content = content.replaceFirst(
-        'android {',
-        'android {\n' + signingConfigBlock,
-      );
-      printMsg('success', 'Injected signingConfigs block.');
-    }
+  int androidIndex = content.indexOf('android {');
+  if (androidIndex != -1) {
+    int insertIndex = androidIndex + 'android {'.length;
+    content =
+        content.substring(0, insertIndex) +
+        '\n' +
+        signingConfigBlock +
+        content.substring(insertIndex);
+    printMsg(
+      'success',
+      'Injected signingConfigs block cleanly inside android block.',
+    );
+  } else {
+    printMsg('error', 'Could not find "android {" block in ${gradleFile.path}');
+    return;
   }
 
-  if (content.contains('buildTypes {') || content.contains('buildTypes{')) {
-    if (!content.contains('signingConfig')) {
-      content = content.replaceAll(
-        RegExp(r'release\s*\{', multiLine: true),
-        isKotlinDsl
-            ? 'release {\n            signingConfig = signingConfigs.getByName("release")'
-            : 'release {\n\t\t\tsigningConfig signingConfigs.release',
-      );
-      printMsg('success', 'Linked release build type to signingConfig.');
-    }
+  // 5. ضبط وتحديث ربط الـ buildTypes ليتعامل مع release بشكل صحيح
+  if (content.contains('release {')) {
+    // إزالة أي ربط قديم مكرر داخل release لتنظيفه
+    content = content.replaceAll(RegExp(r'signingConfig\s*=.*'), '');
+    content = content.replaceAll(
+      RegExp(r'signingConfig\s+signingConfigs\.release'),
+      '',
+    );
+
+    // إضافة الربط الصحيح داخل كتلة release
+    content = content.replaceAll(
+      RegExp(r'release\s*\{', multiLine: true),
+      isKotlinDsl
+          ? 'release {\n            signingConfig = signingConfigs.getByName("release")'
+          : 'release {\n\t\t\tsigningConfig signingConfigs.release',
+    );
+    printMsg(
+      'success',
+      'Successfully linked release build type to signingConfig.',
+    );
   }
 
   gradleFile.writeAsStringSync(content);
-  printMsg('success', 'Keystore linked successfully to ${gradleFile.path}');
+  printMsg(
+    'success',
+    'Gradle file successfully updated and saved at ${gradleFile.path}.',
+  );
 }
 
 void _showKeystoreInfo(Map<String, String> env) {
