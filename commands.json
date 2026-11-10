@@ -875,41 +875,15 @@
             {
               "name": "Create app info file .env",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-code",
+                "color": "#66BB6A"
+              },
               "commands": [
                 {
                   "commands": [
-                    "cat << 'EOF' > .env",
-                    "# App Info",
-                    "APP_NAME=\"My Flutter App\"",
-                    "APP_BUNDLE=\"com.mahmoud.myapp\"",
-                    "APP_VERSION=\"1.0.0+1\"",
-                    "APP_SHORT_DESCRIPTION=\"Simple and fast Flutter application\"",
-                    "APP_LONG_DESCRIPTION=\"A complete cross-platform Flutter application built with Flutter.\"",
-                    "APP_CATEGORY=\"Utilities\"",
-                    "APP_ICON_PATH=\"assets/images/app_icon.png\"",
-                    "",
-                    "# Publisher Info",
-                    "COMMON_NAME=\"Mahmoud Abdelhamid\"",
-                    "ORGANIZATION_NAME=\"Mahmoud Abdelhamid\"",
-                    "ORGANIZATION_UNIT=\"Independent\"",
-                    "COUNTRY=\"EG\"",
-                    "STATE=\"Cairo\"",
-                    "LOCALITY=\"Cairo\"",
-                    "",
-                    "# Keystore Info",
-                    "KEY_ALIAS=\"upload\"",
-                    "STORE_PASSWORD=\"password123\"",
-                    "KEY_PASSWORD=\"password123\"",
-                    "STORE_FILE=\"upload-keystore.jks\"",
-                    "STORE_TYPE=\"PKCS12\"",
-                    "ALGORITHM=\"RSA 2048-bit\"",
-                    "SIGNATURE=\"SHA384withRSA\"",
-                    "KEY_PROPERTIES_PATH=\"android/key.properties\"",
-                    "KEYSTORE_PATH=\"android/app/upload-keystore.jks\"",
-                    "VALIDITY=\"10000\"",
-                    "SHA1=\"\"",
-                    "SHA256=\"\"",
-                    "EOF"
+                    "dart \"$HOME\\.scripts\\flutter.dart\" env"
                   ],
                   "shells": [
                     "Bash",
@@ -920,90 +894,14 @@
                 },
                 {
                   "commands": [
-                    "$envContent = @'",
-                    "# App Info",
-                    "APP_NAME=\"My Flutter App\"",
-                    "APP_BUNDLE=\"com.mahmoud.myapp\"",
-                    "APP_VERSION=\"1.0.0+1\"",
-                    "APP_SHORT_DESCRIPTION=\"Simple and fast Flutter application\"",
-                    "APP_LONG_DESCRIPTION=\"A complete cross-platform Flutter application built with Flutter.\"",
-                    "APP_CATEGORY=\"Utilities\"",
-                    "APP_ICON_PATH=\"assets/images/app_icon.png\"",
-                    "",
-                    "# Publisher Info",
-                    "COMMON_NAME=\"Mahmoud Abdelhamid\"",
-                    "ORGANIZATION_NAME=\"Mahmoud Abdelhamid\"",
-                    "ORGANIZATION_UNIT=\"Independent\"",
-                    "COUNTRY=\"EG\"",
-                    "STATE=\"Cairo\"",
-                    "LOCALITY=\"Cairo\"",
-                    "",
-                    "# Keystore Info",
-                    "KEY_ALIAS=\"upload\"",
-                    "STORE_PASSWORD=\"password123\"",
-                    "KEY_PASSWORD=\"password123\"",
-                    "STORE_FILE=\"upload-keystore.jks\"",
-                    "STORE_TYPE=\"PKCS12\"",
-                    "ALGORITHM=\"RSA 2048-bit\"",
-                    "SIGNATURE=\"SHA384withRSA\"",
-                    "KEY_PROPERTIES_PATH=\"android/key.properties\"",
-                    "KEYSTORE_PATH=\"android/app/upload-keystore.jks\"",
-                    "VALIDITY=\"10000\"",
-                    "SHA1=\"\"",
-                    "SHA256=\"\"",
-                    "'@",
-                    "Set-Content -Path \".env\" -Value $envContent -Encoding utf8"
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" env"
                   ],
                   "shells": [
-                    "PowerShell"
-                  ]
-                },
-                {
-                  "commands": [
-                    "$envContent = @'",
-                    "# App Info",
-                    "APP_NAME=\"My Flutter App\"",
-                    "APP_BUNDLE=\"com.mahmoud.myapp\"",
-                    "APP_VERSION=\"1.0.0+1\"",
-                    "APP_SHORT_DESCRIPTION=\"Simple and fast Flutter application\"",
-                    "APP_LONG_DESCRIPTION=\"A complete cross-platform Flutter application built with Flutter.\"",
-                    "APP_CATEGORY=\"Utilities\"",
-                    "APP_ICON_PATH=\"assets/images/app_icon.png\"",
-                    "",
-                    "# Publisher Info",
-                    "COMMON_NAME=\"Mahmoud Abdelhamid\"",
-                    "ORGANIZATION_NAME=\"Mahmoud Abdelhamid\"",
-                    "ORGANIZATION_UNIT=\"Independent\"",
-                    "COUNTRY=\"EG\"",
-                    "STATE=\"Cairo\"",
-                    "LOCALITY=\"Cairo\"",
-                    "",
-                    "# Keystore Info",
-                    "KEY_ALIAS=\"upload\"",
-                    "STORE_PASSWORD=\"password123\"",
-                    "KEY_PASSWORD=\"password123\"",
-                    "STORE_FILE=\"upload-keystore.jks\"",
-                    "STORE_TYPE=\"PKCS12\"",
-                    "ALGORITHM=\"RSA 2048-bit\"",
-                    "SIGNATURE=\"SHA384withRSA\"",
-                    "KEY_PROPERTIES_PATH=\"android/key.properties\"",
-                    "KEYSTORE_PATH=\"android/app/upload-keystore.jks\"",
-                    "VALIDITY=\"10000\"",
-                    "SHA1=\"\"",
-                    "SHA256=\"\"",
-                    "'@",
-                    "Set-Content -Path \".env\" -Value $envContent -Encoding utf8"
-                  ],
-                  "shells": [
+                    "PowerShell",
                     "Cmd"
                   ]
                 }
-              ],
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-file-code",
-                "color": "#66BB6A"
-              }
+              ]
             },
             {
               "name": "Create Apply Info file",
@@ -1368,19 +1266,28 @@
                 "value": "fa-wand-magic-sparkles",
                 "color": "#ffb703"
               },
-              "commands": {
-                "commands": [
-                  "dart run update_app_info.dart"
-                ],
-                "shells": [
-                  "Bash",
-                  "PowerShell",
-                  "Zsh",
-                  "Cmd",
-                  "Fish",
-                  "Dash"
-                ]
-              }
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$HOME\\.scripts\\flutter.dart\" apply-all"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" apply-all"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
             },
             {
               "name": "Install flutter_launcher_icons",
@@ -2181,47 +2088,50 @@
             {
               "name": "Create key.properties",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-file-shield"
+              },
               "commands": [
                 {
                   "commands": [
-                    "printf \"storePassword=password123\\nkeyPassword=password123\\nkeyAlias=upload\\nstoreFile=upload-keystore.jks\\nCN=Flutter Developer\\nOU=Mobile Development\\nO=My Organization\\nL=City\\nST=State\\nC=US\\n\" > key.properties && echo \"Created key.properties successfully.\""
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-properties"
                   ],
                   "shells": [
                     "Bash",
+                    "PowerShell",
                     "Zsh",
+                    "Cmd",
                     "Fish",
                     "Dash"
                   ]
                 },
                 {
                   "commands": [
-                    "if (Test-Path app_info.json) { $info = Get-Content app_info.json -Raw -Encoding utf8 | ConvertFrom-Json; $ks = $info.keystore; if ($ks) { $content = @(\"storePassword=$($ks.storePassword)\", \"keyPassword=$($ks.keyPassword)\", \"keyAlias=$($ks.keyAlias)\", \"storeFile=../$($ks.storeFile)\") -join \"`r`n\"; Set-Content -Path key.properties -Value $content; if (!(Test-Path android)) { mkdir android -Force | Out-Null }; Set-Content -Path android/key.properties -Value $content; Write-Host \"[✓] Created key.properties and android/key.properties from app_info.json successfully.\" -ForegroundColor Green } else { Write-Host \"[-] Error: No 'keystore' object found in app_info.json\" -ForegroundColor Red } } else { Write-Host \"[-] Error: app_info.json not found!\" -ForegroundColor Red }"
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-properties"
                   ],
                   "shells": [
-                    "PowerShell"
-                  ]
-                },
-                {
-                  "commands": [
-                    "if (Test-Path app_info.json) { $info = Get-Content app_info.json -Raw -Encoding utf8 | ConvertFrom-Json; $ks = $info.keystore; if ($ks) { $content = @(\"storePassword=$($ks.storePassword)\", \"keyPassword=$($ks.keyPassword)\", \"keyAlias=$($ks.keyAlias)\", \"storeFile=../$($ks.storeFile)\") -join \"`r`n\"; Set-Content -Path key.properties -Value $content; if (!(Test-Path android)) { mkdir android -Force | Out-Null }; Set-Content -Path android/key.properties -Value $content; Write-Host \"[✓] Created key.properties and android/key.properties from app_info.json successfully.\" -ForegroundColor Green } else { Write-Host \"[-] Error: No 'keystore' object found in app_info.json\" -ForegroundColor Red } } else { Write-Host \"[-] Error: app_info.json not found!\" -ForegroundColor Red }"
-                  ],
-                  "shells": [
-                    "Cmd"
+                    "Bash",
+                    "PowerShell",
+                    "Zsh",
+                    "Cmd",
+                    "Fish",
+                    "Dash"
                   ]
                 }
-              ],
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-file-shield"
-              }
+              ]
             },
             {
               "name": "Generate keystore",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-shield-halved"
+              },
               "commands": [
                 {
                   "commands": [
-                    "while IFS=\"=\" read -r k v || [ -n \"$k\" ]; do k=$(echo \"$k\" | tr -d \"\\r \"); v=$(echo \"$v\" | tr -d \"\\r\"); [ -n \"$k\" ] && export \"$k\"=\"$v\"; done < key.properties && keytool -genkeypair -v -keystore \"$storeFile\" -alias \"$keyAlias\" -keyalg RSA -keysize 2048 -validity 10000 -storepass \"$storePassword\" -keypass \"$keyPassword\" -dname \"CN=$CN, OU=$OU, O=$O, L=$L, ST=$ST, C=$C\" && echo \"Keystore created successfully.\""
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore"
                   ],
                   "shells": [
                     "Bash",
@@ -2232,62 +2142,54 @@
                 },
                 {
                   "commands": [
-                    "$cfg = @{}; Get-Content key.properties | ForEach-Object { $line = $_.Trim(); if ($line -and !$line.StartsWith(\"#\")) { $k,$v = $line.Split(\"=\",2); $cfg[$k.Trim()] = $v.Trim() } }; keytool -genkeypair -v -keystore $cfg[\"storeFile\"] -alias $cfg[\"keyAlias\"] -keyalg RSA -keysize 2048 -validity 10000 -storepass $cfg[\"storePassword\"] -keypass $cfg[\"keyPassword\"] -dname \"CN=$($cfg[\"CN\"]), OU=$($cfg[\"OU\"]), O=$($cfg[\"O\"]), L=$($cfg[\"L\"]), ST=$($cfg[\"ST\"]), C=$($cfg[\"C\"])\"; Write-Host \"Keystore created successfully.\""
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore"
                   ],
                   "shells": [
-                    "PowerShell"
-                  ]
-                },
-                {
-                  "commands": [
-                    "$cfg = @{}; Get-Content key.properties | ForEach-Object { $line = $_.Trim(); if ($line -and !$line.StartsWith(\"#\")) { $k,$v = $line.Split(\"=\",2); $cfg[$k.Trim()] = $v.Trim() } }; keytool -genkeypair -v -keystore $cfg[\"storeFile\"] -alias $cfg[\"keyAlias\"] -keyalg RSA -keysize 2048 -validity 10000 -storepass $cfg[\"storePassword\"] -keypass $cfg[\"keyPassword\"] -dname \"CN=$($cfg[\"CN\"]), OU=$($cfg[\"OU\"]), O=$($cfg[\"O\"]), L=$($cfg[\"L\"]), ST=$($cfg[\"ST\"]), C=$($cfg[\"C\"])\"; Write-Host \"Keystore created successfully.\""
-                  ],
-                  "shells": [
-                    "Cmd"
+                    "Bash",
+                    "PowerShell",
+                    "Zsh",
+                    "Cmd",
+                    "Fish",
+                    "Dash"
                   ]
                 }
-              ],
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-shield-halved"
-              }
+              ]
             },
             {
               "name": "Link keystore to Android",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-link"
+              },
               "commands": [
                 {
                   "commands": [
-                    "mkdir -p android && sed \"s|^storeFile=\\(.*\\)|storeFile=../\\1|\" key.properties > android/key.properties && python3 -c 'import os, re; bg=\"android/app/build.gradle\"; (lambda c: open(bg,\"w\").write(\"def keystoreProperties = new Properties()\\ndef keystorePropertiesFile = rootProject.file(\\\"key.properties\\\")\\nif (keystorePropertiesFile.exists()) {\\n    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))\\n}\\n\\n\" + re.sub(r\"buildTypes\\s*\\{\", \"signingConfigs {\\n        release {\\n            keyAlias = keystoreProperties[\\\"keyAlias\\\"]\\n            keyPassword = keystoreProperties[\\\"keyPassword\\\"]\\n            storeFile = keystoreProperties[\\\"storeFile\\\"] ? file(keystoreProperties[\\\"storeFile\\\"]) : null\\n            storePassword = keystoreProperties[\\\"storePassword\\\"]\\n        }\\n    }\\n\\n    buildTypes {\", re.sub(r\"signingConfig\\s*=\\s*signingConfigs\\.debug\", \"signingConfig = signingConfigs.release\", c))) if os.path.exists(bg) and \"keystoreProperties\" not in c else None)(open(bg).read() if os.path.exists(bg) else \"\")' && echo \"Keystore fully linked to Android successfully!\""
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-sha"
                   ],
                   "shells": [
                     "Bash",
+                    "PowerShell",
                     "Zsh",
+                    "Cmd",
                     "Fish",
                     "Dash"
                   ]
                 },
                 {
                   "commands": [
-                    "if (!(Test-Path android)) { mkdir android | Out-Null }; (Get-Content key.properties) -replace '^storeFile=(.*)', 'storeFile=../$1' | Set-Content android/key.properties; $bg='android/app/build.gradle'; if (Test-Path $bg) { $c = Get-Content $bg -Raw; if ($c -notmatch 'keystoreProperties') { $hdr=\"def keystoreProperties = new Properties()`ndef keystorePropertiesFile = rootProject.file('key.properties')`nif (keystorePropertiesFile.exists()) {`n    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))`n}`n`n\"; $sc=\"`n    signingConfigs {`n        release {`n            keyAlias = keystoreProperties['keyAlias']`n            keyPassword = keystoreProperties['keyPassword']`n            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null`n            storePassword = keystoreProperties['storePassword']`n        }`n    }`n\"; $c = $hdr + ($c -replace 'buildTypes\\s*\\{', ($sc + '    buildTypes {') -replace 'signingConfig\\s*=\\s*signingConfigs\\.debug', 'signingConfig = signingConfigs.release'); Set-Content $bg -Value $c; Write-Host 'build.gradle configured successfully.' } }; Write-Host 'Keystore fully linked to Android successfully!'"
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-sha"
                   ],
                   "shells": [
-                    "PowerShell"
-                  ]
-                },
-                {
-                  "commands": [
-                    "if (!(Test-Path android)) { mkdir android | Out-Null }; (Get-Content key.properties) -replace '^storeFile=(.*)', 'storeFile=../$1' | Set-Content android/key.properties; $bg='android/app/build.gradle'; if (Test-Path $bg) { $c = Get-Content $bg -Raw; if ($c -notmatch 'keystoreProperties') { $hdr=\"def keystoreProperties = new Properties()`ndef keystorePropertiesFile = rootProject.file('key.properties')`nif (keystorePropertiesFile.exists()) {`n    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))`n}`n`n\"; $sc=\"`n    signingConfigs {`n        release {`n            keyAlias = keystoreProperties['keyAlias']`n            keyPassword = keystoreProperties['keyPassword']`n            storeFile = keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null`n            storePassword = keystoreProperties['storePassword']`n        }`n    }`n\"; $c = $hdr + ($c -replace 'buildTypes\\s*\\{', ($sc + '    buildTypes {') -replace 'signingConfig\\s*=\\s*signingConfigs\\.debug', 'signingConfig = signingConfigs.release'); Set-Content $bg -Value $c; Write-Host 'build.gradle configured successfully.' } }; Write-Host 'Keystore fully linked to Android successfully!'"
-                  ],
-                  "shells": [
-                    "Cmd"
+                    "Bash",
+                    "PowerShell",
+                    "Zsh",
+                    "Cmd",
+                    "Fish",
+                    "Dash"
                   ]
                 }
-              ],
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-link"
-              }
+              ]
             }
           ],
           "folders": [],
