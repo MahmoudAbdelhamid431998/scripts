@@ -102,80 +102,6 @@
           "default": "./"
         }
       ]
-    },
-    {
-      "name": "Check command runner update",
-      "autoRun": true,
-      "icon": {
-        "type": "fontawesome",
-        "value": "fa-cloud-arrow-up",
-        "color": "#66BB6A"
-      },
-      "commands": {
-        "commands": [
-          "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
-          "git status -uno",
-          "git push origin main"
-        ],
-        "shells": [
-          "Bash",
-          "PowerShell",
-          "Zsh",
-          "Cmd",
-          "Fish",
-          "Dash"
-        ]
-      }
-    },
-    {
-      "name": "Update command runner",
-      "autoRun": true,
-      "icon": {
-        "type": "fontawesome",
-        "value": "fa-cloud-arrow-up",
-        "color": "#66BB6A"
-      },
-      "commands": [
-        {
-          "commands": [
-            "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
-            "cp -r 'C:\\Users\\mahmoud\\.command-runner.json' 'D:\\Workspace\\VS Code Extensions\\command-runner\\command-runner.json'",
-            "git add -A",
-            "git commit -m \"update $(date '+%Y-%m-%d %H:%M')\"",
-            "git push origin main"
-          ],
-          "shells": [
-            "Bash",
-            "Zsh",
-            "Fish",
-            "Dash"
-          ]
-        },
-        {
-          "commands": [
-            "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
-            "Copy-Item -Recurse 'C:\\Users\\mahmoud\\.command-runner.json' 'D:\\Workspace\\VS Code Extensions\\command-runner\\command-runner.json'",
-            "git add -A",
-            "git commit -m \"update $(Get-Date -Format 'yyyy-MM-dd HH:mm')\"",
-            "git push origin main"
-          ],
-          "shells": [
-            "PowerShell"
-          ]
-        },
-        {
-          "commands": [
-            "cd 'D:\\Workspace\\VS Code Extensions\\command-runner'",
-            "xcopy /E /I 'C:\\Users\\mahmoud\\.command-runner.json' 'D:\\Workspace\\VS Code Extensions\\command-runner\\command-runner.json'",
-            "git add -A",
-            "git commit -m \"update %date% %time%\"",
-            "git push origin main"
-          ],
-          "shells": [
-            "Cmd"
-          ]
-        }
-      ]
     }
   ],
   "folders": [
@@ -1271,9 +1197,20 @@
             {
               "name": "Build",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-bug",
+                "color": "#0077b6"
+              },
               "commands": {
                 "commands": [
-                  "flutter build"
+                  "flutter build apk --release",
+                  "flutter build appbundle --release",
+                  "flutter build ios --release",
+                  "flutter build windows --release",
+                  "flutter build linux --release",
+                  "flutter build macos --release",
+                  "flutter build web --release"
                 ],
                 "shells": [
                   "Bash",
@@ -1283,11 +1220,6 @@
                   "Fish",
                   "Dash"
                 ]
-              },
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-solid fa-hammer",
-                "color": "#0077b6"
               }
             },
             {
@@ -1399,8 +1331,12 @@
               }
             },
             {
-              "name": "Build Mac OS app",
+              "name": "Build MacOS app",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-apple"
+              },
               "commands": {
                 "commands": [
                   "flutter build macos --release"
@@ -1413,10 +1349,6 @@
                   "Fish",
                   "Dash"
                 ]
-              },
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-brands fa-apple"
               }
             },
             {
@@ -1455,78 +1387,94 @@
             {
               "name": "Copy all",
               "autoRun": true,
-              "commands": {
-                "commands": [
-                  "New-Item -ItemType Directory -Force -Path \"release\"",
-                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
-                  "Copy-Item -Path \"build\\app\\outputs\\flutter-apk\\app-release.apk\" -Destination \"release\\$projectName.apk\"",
-                  "Copy-Item -Path \"build\\app\\outputs\\bundle\\release\\app-release.aab\" -Destination \"release\\$projectName.aab\"",
-                  "Copy-Item -Path \"build\\windows\\x64\\runner\\Release\\*\" -Destination \"release\\$projectName-windows\" -Recurse",
-                  "Get-ChildItem -Path \"release\\$projectName-windows\\*.exe\" | Rename-Item -NewName \"$projectName.exe\"",
-                  "New-Item -ItemType Directory -Force -Path \"release\\$projectName-web\"",
-                  "Copy-Item -Path \"build\\web\\*\" -Destination \"release\\$projectName-web\" -Recurse"
-                ],
-                "shells": [
-                  "Bash",
-                  "PowerShell",
-                  "Zsh",
-                  "Cmd",
-                  "Fish",
-                  "Dash"
-                ]
-              },
               "icon": {
                 "type": "fontawesome",
                 "value": "fa-copy"
-              }
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$HOME\\.scripts\\flutter.dart\" copy-all"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-all"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
             },
             {
               "name": "Copy apk",
               "autoRun": true,
-              "commands": {
-                "commands": [
-                  "New-Item -ItemType Directory -Force -Path \"release\"",
-                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
-                  "Copy-Item -Path \"build\\app\\outputs\\flutter-apk\\app-release.apk\" -Destination \"release\\$projectName.apk\""
-                ],
-                "shells": [
-                  "Bash",
-                  "PowerShell",
-                  "Zsh",
-                  "Cmd",
-                  "Fish",
-                  "Dash"
-                ]
-              },
               "icon": {
                 "type": "fontawesome",
                 "value": "fa-brands fa-android",
                 "color": "#66BB6A"
-              }
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-apk"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-apk"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
             },
             {
               "name": "Copy aab",
               "autoRun": true,
-              "commands": {
-                "commands": [
-                  "New-Item -ItemType Directory -Force -Path \"release\"",
-                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
-                  "Copy-Item -Path \"build\\app\\outputs\\bundle\\release\\app-release.aab\" -Destination \"release\\$projectName.aab\""
-                ],
-                "shells": [
-                  "Bash",
-                  "PowerShell",
-                  "Zsh",
-                  "Cmd",
-                  "Fish",
-                  "Dash"
-                ]
-              },
               "icon": {
                 "type": "fontawesome",
                 "value": "fa-brands fa-google-play",
                 "color": "#4085F0"
-              }
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$HOME\\.scripts\\flutter.dart\" copy-aab"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-aab"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
             },
             {
               "name": "Copy ios",
@@ -1569,36 +1517,45 @@
             {
               "name": "Copy windows",
               "autoRun": true,
-              "commands": {
-                "commands": [
-                  "New-Item -ItemType Directory -Force -Path \"release\"",
-                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
-                  "Copy-Item -Path \"build\\windows\\x64\\runner\\Release\\*\" -Destination \"release\\$projectName-windows\" -Recurse",
-                  "Get-ChildItem -Path \"release\\$projectName-windows\\*.exe\" | Rename-Item -NewName \"$projectName.exe\""
-                ],
-                "shells": [
-                  "Bash",
-                  "PowerShell",
-                  "Zsh",
-                  "Cmd",
-                  "Fish",
-                  "Dash"
-                ]
-              },
               "icon": {
                 "type": "fontawesome",
                 "value": "fa-brands fa-windows",
                 "color": "#3FC1F7"
-              }
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$HOME\\.scripts\\flutter.dart\" copy-windows"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-windows"
+                  ],
+                  "shells": [
+                    "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
             },
             {
               "name": "Copy linux",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-linux"
+              },
               "commands": [
                 {
                   "commands": [
-                    "mkdir -p release",
-                    "cp -r build/linux/x64/release/bundle \"release/$(basename \"$PWD\")-linux\""
+                    "dart \"$HOME\\.scripts\\flutter.dart\" copy-linux"
                   ],
                   "shells": [
                     "Bash",
@@ -1609,34 +1566,26 @@
                 },
                 {
                   "commands": [
-                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/linux/x64/release/bundle \"release/$n-linux\""
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-linux"
                   ],
                   "shells": [
-                    "PowerShell"
-                  ]
-                },
-                {
-                  "commands": [
-                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/linux/x64/release/bundle \"release/$n-linux\""
-                  ],
-                  "shells": [
+                    "PowerShell",
                     "Cmd"
                   ]
                 }
-              ],
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-brands fa-linux"
-              }
+              ]
             },
             {
               "name": "Copy macos",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-brands fa-apple"
+              },
               "commands": [
                 {
                   "commands": [
-                    "mkdir -p release",
-                    "cp -r build/macos/Build/Products/Release/*.app \"release/$(basename \"$PWD\")-macos.app\""
+                    "dart \"$HOME\\.scripts\\flutter.dart\" copy-macos"
                   ],
                   "shells": [
                     "Bash",
@@ -1647,50 +1596,51 @@
                 },
                 {
                   "commands": [
-                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/macos/Build/Products/Release/*.app \"release/$n-macos.app\""
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-macos"
                   ],
                   "shells": [
-                    "PowerShell"
-                  ]
-                },
-                {
-                  "commands": [
-                    "$n=(Get-Item .).Name; if (!(Test-Path release)) { mkdir release | Out-Null }; cp -r build/macos/Build/Products/Release/*.app \"release/$n-macos.app\""
-                  ],
-                  "shells": [
+                    "PowerShell",
                     "Cmd"
                   ]
                 }
-              ],
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-brands fa-apple"
-              }
+              ]
             },
             {
               "name": "Copy web",
               "autoRun": true,
-              "commands": {
-                "commands": [
-                  "New-Item -ItemType Directory -Force -Path \"release\"",
-                  "$projectName = (Get-Content pubspec.yaml | Select-String \"name:\" | Select-Object -First 1).ToString().Split(\" \")[1].Trim()",
-                  "New-Item -ItemType Directory -Force -Path \"release\\$projectName-web\"",
-                  "Copy-Item -Path \"build\\web\\*\" -Destination \"release\\$projectName-web\" -Recurse"
-                ],
-                "shells": [
-                  "Bash",
-                  "PowerShell",
-                  "Zsh",
-                  "Cmd",
-                  "Fish",
-                  "Dash"
-                ]
-              },
               "icon": {
                 "type": "fontawesome",
                 "value": "fa-globe",
                 "color": "#0077b6"
-              }
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "dart \"$HOME\\.scripts\\flutter.dart\" copy-web"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "PowerShell",
+                    "Zsh",
+                    "Cmd",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" copy-web"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "PowerShell",
+                    "Zsh",
+                    "Cmd",
+                    "Fish",
+                    "Dash"
+                  ]
+                }
+              ]
             }
           ],
           "folders": [],
@@ -1703,12 +1653,20 @@
           "name": "Keystore",
           "commands": [
             {
-              "name": "Install keytool",
+              "name": "Quick Generate keystore",
               "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-bolt",
+                "color": "#ffb703"
+              },
               "commands": [
                 {
                   "commands": [
-                    "sudo apt update && sudo apt install -y default-jdk"
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-properties",
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore",
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-link",
+                    "dart \"$HOME\\.scripts\\flutter.dart\" keystore-info-to-env"
                   ],
                   "shells": [
                     "Bash",
@@ -1719,32 +1677,25 @@
                 },
                 {
                   "commands": [
-                    "winget install Microsoft.OpenJDK.17"
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-properties",
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore",
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-link",
+                    "dart \"$env:USERPROFILE\\.scripts\\flutter.dart\" keystore-info-to-env"
                   ],
                   "shells": [
-                    "PowerShell"
-                  ]
-                },
-                {
-                  "commands": [
-                    "winget install Microsoft.OpenJDK.17"
-                  ],
-                  "shells": [
+                    "PowerShell",
                     "Cmd"
                   ]
                 }
-              ],
-              "icon": {
-                "type": "fontawesome",
-                "value": "fa-key"
-              }
+              ]
             },
             {
               "name": "Create key.properties",
               "autoRun": true,
               "icon": {
                 "type": "fontawesome",
-                "value": "fa-file-shield"
+                "value": "fa-shield-halved",
+                "color": "#66BB6A"
               },
               "commands": [
                 {
@@ -1780,7 +1731,8 @@
               "autoRun": true,
               "icon": {
                 "type": "fontawesome",
-                "value": "fa-shield-halved"
+                "value": "fa-key",
+                "color": "#66BB6A"
               },
               "commands": [
                 {
@@ -1864,6 +1816,44 @@
                   ],
                   "shells": [
                     "PowerShell",
+                    "Cmd"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Install keytool",
+              "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-key",
+                "color": "#ffb703"
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "sudo apt update && sudo apt install -y default-jdk"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "winget install Microsoft.OpenJDK.17"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "winget install Microsoft.OpenJDK.17"
+                  ],
+                  "shells": [
                     "Cmd"
                   ]
                 }

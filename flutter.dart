@@ -497,15 +497,22 @@ void _createKeystoreProperties(Map<String, String> env) {
   final propFile = File(propPath);
   propFile.parent.createSync(recursive: true);
 
+  final keystorePath = File(
+    env['KEYSTORE_PATH'] ?? 'android/app/upload-keystore.jks',
+  ).absolute.path.replaceAll('\\', '/');
+
   final content =
       '''
 storePassword=${env['STORE_PASSWORD']}
 keyPassword=${env['KEY_PASSWORD']}
 keyAlias=${env['KEY_ALIAS']}
-storeFile=${env['STORE_FILE']}
+storeFile=$keystorePath
 ''';
-  propFile.writeAsStringSync(content);
-  printMsg('success', 'Created $propPath successfully.');
+  propFile.writeAsStringSync(content.trim() + '\n');
+  printMsg(
+    'success',
+    'Created $propPath with absolute storeFile path: $keystorePath',
+  );
 }
 
 void _generateKeystore(Map<String, String> env) {
@@ -558,7 +565,7 @@ void _generateKeystore(Map<String, String> env) {
 void _linkKeystore(Map<String, String> env) {
   printMsg(
     'info',
-    'Linking Keystore securely following official Gradle Kotlin DSL specs...',
+    'Linking Keystore with absolute paths for key.properties...',
   );
 
   File? gradleFile = _findGradleFile();
@@ -570,10 +577,13 @@ void _linkKeystore(Map<String, String> env) {
     return;
   }
 
+  final keyPropsPath = File(
+    env['KEY_PROPERTIES_PATH'] ?? 'android/key.properties',
+  ).absolute.path.replaceAll('\\', '/');
+
   var content = gradleFile.readAsStringSync();
   final isKotlinDsl = gradleFile.path.endsWith('.kts');
 
-  // 1. التنظيف الشامل لأي أسطر قديمة أو مكررة لـ keystoreProperties لمنع التداخل
   content = content.replaceAll(
     RegExp(r'val keystoreProperties =[\s\S]*?\}'),
     '',
@@ -588,14 +598,13 @@ void _linkKeystore(Map<String, String> env) {
     '',
   );
 
-  // 2. إضافة قراءة المفتاح في أعلى الملف بالشكل القياسي الصحيح
   final keystoreLoadBlock = isKotlinDsl
       ? '''
 import java.util.Properties
 import java.io.FileInputStream
 
 val keystoreProperties = Properties()
-val keystorePropertiesFile = rootProject.file("key.properties")
+val keystorePropertiesFile = File("$keyPropsPath")
 if (keystorePropertiesFile.exists()) {
     FileInputStream(keystorePropertiesFile).use { stream ->
         keystoreProperties.load(stream)
@@ -604,31 +613,25 @@ if (keystorePropertiesFile.exists()) {
 '''
       : '''
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
+def keystorePropertiesFile = new File('$keyPropsPath')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 ''';
   content = keystoreLoadBlock + '\n' + content;
-  printMsg(
-    'success',
-    'Injected clean keystoreProperties loader at the top of gradle file.',
-  );
 
-  // 3. إزالة أي كتل signingConfigs أو ربط release قديمة لتجنب تكرارها أو تشويه البنية
   content = content.replaceAll(
     RegExp(r'signingConfigs\s*\{[\s\S]*?\}', multiLine: true),
     '',
   );
 
-  // 4. حقن signingConfigs بدقة مباشرة داخل كتلة android {
   final signingConfigBlock = isKotlinDsl
       ? '''
     signingConfigs {
         create("release") {
             keyAlias = keystoreProperties.getProperty("keyAlias")
             keyPassword = keystoreProperties.getProperty("keyPassword")
-            storeFile = keystoreProperties.getProperty("storeFile")?.let { rootProject.file(it) }
+            storeFile = keystoreProperties.getProperty("storeFile")?.let { File(it) }
             storePassword = keystoreProperties.getProperty("storePassword")
         }
     }
@@ -638,7 +641,7 @@ if (keystorePropertiesFile.exists()) {
         release {
             keyAlias keystoreProperties.getProperty('keyAlias')
             keyPassword keystoreProperties.getProperty('keyPassword')
-            storeFile keystoreProperties.getProperty('storeFile') ? rootProject.file(keystoreProperties.getProperty('storeFile')) : null
+            storeFile keystoreProperties.getProperty('storeFile') ? new File(keystoreProperties.getProperty('storeFile')) : null
             storePassword keystoreProperties.getProperty('storePassword')
         }
     }
@@ -652,42 +655,25 @@ if (keystorePropertiesFile.exists()) {
         '\n' +
         signingConfigBlock +
         content.substring(insertIndex);
-    printMsg(
-      'success',
-      'Injected signingConfigs block cleanly inside android block.',
-    );
-  } else {
-    printMsg('error', 'Could not find "android {" block in ${gradleFile.path}');
-    return;
   }
 
-  // 5. ضبط وتحديث ربط الـ buildTypes ليتعامل مع release بشكل صحيح
   if (content.contains('release {')) {
-    // إزالة أي ربط قديم مكرر داخل release لتنظيفه
     content = content.replaceAll(RegExp(r'signingConfig\s*=.*'), '');
     content = content.replaceAll(
       RegExp(r'signingConfig\s+signingConfigs\.release'),
       '',
     );
 
-    // إضافة الربط الصحيح داخل كتلة release
     content = content.replaceAll(
       RegExp(r'release\s*\{', multiLine: true),
       isKotlinDsl
           ? 'release {\n            signingConfig = signingConfigs.getByName("release")'
           : 'release {\n\t\t\tsigningConfig signingConfigs.release',
     );
-    printMsg(
-      'success',
-      'Successfully linked release build type to signingConfig.',
-    );
   }
 
   gradleFile.writeAsStringSync(content);
-  printMsg(
-    'success',
-    'Gradle file successfully updated and saved at ${gradleFile.path}.',
-  );
+  printMsg('success', 'Gradle file updated successfully with absolute paths.');
 }
 
 void _showKeystoreInfo(Map<String, String> env) {
@@ -826,9 +812,12 @@ void _copyArtifacts(Map<String, String> env, String type) {
   final releaseDir = Directory('release');
   releaseDir.createSync(recursive: true);
 
-  Map<String, String> paths = {
+  Map<String, String> filePaths = {
     'apk': 'build/app/outputs/flutter-apk/app-release.apk',
     'aab': 'build/app/outputs/bundle/release/app-release.aab',
+  };
+
+  Map<String, String> dirPaths = {
     'ios': 'build/ios/iphoneos/Runner.app',
     'windows': 'build/windows/x64/runner/Release',
     'linux': 'build/linux/x64/release/bundle',
@@ -837,32 +826,89 @@ void _copyArtifacts(Map<String, String> env, String type) {
   };
 
   if (type == 'all') {
-    paths.forEach((k, v) => _copySingle(v, releaseDir.path, appName, k));
+    filePaths.forEach(
+      (k, v) => _copyFileArtifact(v, releaseDir.path, appName, k),
+    );
+    dirPaths.forEach(
+      (k, v) => _copyDirArtifact(v, releaseDir.path, appName, k),
+    );
   } else {
-    if (paths.containsKey(type)) {
-      _copySingle(paths[type]!, releaseDir.path, appName, type);
+    if (filePaths.containsKey(type)) {
+      _copyFileArtifact(filePaths[type]!, releaseDir.path, appName, type);
+    } else if (dirPaths.containsKey(type)) {
+      _copyDirArtifact(dirPaths[type]!, releaseDir.path, appName, type);
     }
   }
 }
 
-void _copySingle(String srcPath, String destDir, String appName, String type) {
+void _copyFileArtifact(
+  String srcPath,
+  String destDir,
+  String appName,
+  String type,
+) {
   final srcFile = File(srcPath);
-  final srcDir = Directory(srcPath);
-
   String ext = (type == 'apk')
       ? '.apk'
       : (type == 'aab')
       ? '.aab'
       : '';
-  String destName = '$appName-$type$ext';
-  String destPath = '$destDir/$destName';
+  String destPath = '$destDir/$appName$ext';
 
   if (srcFile.existsSync()) {
     srcFile.copySync(destPath);
-    printMsg('success', 'Copied $type to $destPath');
-  } else if (srcDir.existsSync()) {
-    printMsg('success', 'Found folder for $type at $srcPath');
+    printMsg('success', 'Copied $type file to $destPath');
   } else {
-    printMsg('warning', 'Source for $type not found at $srcPath');
+    printMsg(
+      'warning',
+      'Source file for $type not found at $srcPath (Make sure to build first).',
+    );
   }
+}
+
+void _copyDirArtifact(
+  String srcPath,
+  String destDir,
+  String appName,
+  String type,
+) {
+  final srcDir = Directory(srcPath);
+  String destPath = '$destDir/$appName-$type';
+
+  if (srcDir.existsSync()) {
+    final targetSubDir = Directory(destPath);
+    if (targetSubDir.existsSync()) {
+      targetSubDir.deleteSync(recursive: true);
+    }
+    targetSubDir.createSync(recursive: true);
+
+    _copyDirectoryRecursive(srcDir, targetSubDir);
+    printMsg(
+      'success',
+      'Copied $type folder completely to ${targetSubDir.path}',
+    );
+  } else {
+    printMsg(
+      'warning',
+      'Source directory for $type not found at $srcPath (Make sure to build first).',
+    );
+  }
+}
+
+void _copyDirectoryRecursive(Directory source, Directory destination) {
+  source.listSync(recursive: false).forEach((entity) {
+    String entityName = entity.uri.pathSegments.last;
+    if (entityName.isEmpty && entity.path.isNotEmpty) {
+      entityName = Directory(entity.path).path
+          .split(Platform.pathSeparator)
+          .last;
+    }
+    if (entity is Directory) {
+      var newDirectory = Directory('${destination.path}/$entityName');
+      newDirectory.createSync(recursive: true);
+      _copyDirectoryRecursive(entity, newDirectory);
+    } else if (entity is File) {
+      entity.copySync('${destination.path}/$entityName');
+    }
+  });
 }
