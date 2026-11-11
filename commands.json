@@ -3413,6 +3413,37 @@
             "value": "fa-code-branch",
             "color": "#0077b6"
           }
+        },
+        {
+          "name": "Status (Script)",
+          "autoRun": true,
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-code-branch",
+            "color": "#ffb703"
+          },
+          "commands": [
+            {
+              "commands": [
+                "bash \"$HOME\\.scripts\\git.sh\""
+              ],
+              "shells": [
+                "Bash",
+                "Zsh",
+                "Fish",
+                "Dash"
+              ]
+            },
+            {
+              "commands": [
+                "& \"$env:USERPROFILE\\.scripts\\git.ps1\""
+              ],
+              "shells": [
+                "PowerShell",
+                "Cmd"
+              ]
+            }
+          ]
         }
       ],
       "folders": []
