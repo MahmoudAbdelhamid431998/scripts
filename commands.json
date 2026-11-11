@@ -4,24 +4,33 @@
     {
       "name": "Clear",
       "autoRun": true,
-      "commands": {
-        "commands": [
-          "clear"
-        ],
-        "shells": [
-          "Bash",
-          "PowerShell",
-          "Zsh",
-          "Cmd",
-          "Fish",
-          "Dash"
-        ]
-      },
       "icon": {
         "type": "fontawesome",
         "value": "fa-x",
         "color": "#c1121f"
-      }
+      },
+      "commands": [
+        {
+          "commands": [
+            "clear"
+          ],
+          "shells": [
+            "Bash",
+            "PowerShell",
+            "Zsh",
+            "Fish",
+            "Dash"
+          ]
+        },
+        {
+          "commands": [
+            "cls"
+          ],
+          "shells": [
+            "Cmd"
+          ]
+        }
+      ]
     },
     {
       "name": "Quit",
@@ -4411,8 +4420,7 @@
           "commands": [
             {
               "commands": [
-                "cd \"$HOME\\.scripts\"",
-                "bash 'git.sh'"
+                "(cd \"$HOME\\.scripts\" && bash git.sh)"
               ],
               "shells": [
                 "Bash",
@@ -4423,11 +4431,22 @@
             },
             {
               "commands": [
-                "cd \"$env:USERPROFILE\\.scripts\"",
-                "./git.ps1"
+                "$old = (Get-Location)",
+                "Set-Location  \"$env:USERPROFILE\\.scripts\"",
+                "./git.ps1",
+                "Set-Location $old"
               ],
               "shells": [
-                "PowerShell",
+                "PowerShell"
+              ]
+            },
+            {
+              "commands": [
+                "pushd \"$env:USERPROFILE\\.scripts\"",
+                "./git.ps1",
+                "popd"
+              ],
+              "shells": [
                 "Cmd"
               ]
             }
@@ -4444,10 +4463,13 @@
           "commands": [
             {
               "commands": [
+                "(",
                 "cd \"$HOME\\.scripts\"",
                 "git add -A",
                 "git commit -m \"update $(date '+%Y-%m-%d %H:%M')\"",
-                "git push origin main"
+                "git push origin main",
+                "Set-Location $old",
+                ")"
               ],
               "shells": [
                 "Bash",
@@ -4458,10 +4480,12 @@
             },
             {
               "commands": [
+                "$old = (Get-Location)",
                 "cd \"$env:USERPROFILE\\.scripts\"",
                 "git add -A",
                 "git commit -m \"update $(Get-Date -Format 'yyyy-MM-dd HH:mm')\"",
-                "git push origin main"
+                "git push origin main",
+                "Set-Location $old"
               ],
               "shells": [
                 "PowerShell"
@@ -4469,10 +4493,11 @@
             },
             {
               "commands": [
-                "cd \"$env:USERPROFILE\\.scripts\"",
+                "pushd \"$env:USERPROFILE\\.scripts\" & (",
                 "git add -A",
                 "git commit -m \"update %date% %time%\"",
-                "git push origin main"
+                "git push origin main",
+                ") & popd"
               ],
               "shells": [
                 "Cmd"
