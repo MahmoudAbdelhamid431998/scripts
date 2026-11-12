@@ -1,0 +1,311 @@
+/* ==========================================================================
+   ملف التنسيق الداكن الشامل (Dark Theme) - Markdown Preview Enhanced
+   مستوحى من باليت Catppuccin Mocha الحديثة والمريحة للعين
+   ========================================================================== */
+
+.markdown-preview.markdown-preview {
+  // 1. الخلفية العامة والخطوط الأساسية
+  background-color: #181818;
+  color: #d6d6d6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+
+  // 2. العناوين والتسلسل الهرمي
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 14px;
+    line-height: 1.35;
+  }
+
+  h1 {
+    color: rgb(243, 198, 85);
+    font-size: 2em;
+    padding-bottom: 0.3em;
+    border-bottom: 2px solid #313244;
+  }
+
+  h2 {
+    color: #226dcf;
+    font-size: 1.5em;
+    padding-bottom: 0.25em;
+    border-bottom: 1px solid #313244;
+  }
+
+  h3 {
+    color: #c73131;
+    font-size: 1.25em;
+  }
+
+  h4 {
+    color: rgb(165, 38, 165);
+    font-size: 1.1em;
+  }
+
+  h5 {
+    color: rgb(233, 111, 66);
+    font-size: 1em;
+  }
+
+  h6 {
+    color: #cf3a96;
+    font-size: 0.9em;
+  }
+
+  // 3. تنسيقات النصوص وعلامات التمييز
+  strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  em {
+    color: #bac2de;
+    font-style: italic;
+  }
+
+  del {
+    color: #6c7086;
+  }
+
+  mark {
+    background-color: #f9e2af;
+    color: #11111b;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  sub, sup {
+    font-size: 75%;
+    color: #a6adc8;
+  }
+
+  // 4. الروابط
+  a {
+    color: #89dceb;
+    text-decoration: none;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+
+    &:hover {
+      color: #74c7ec;
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: #b4befe;
+    }
+  }
+
+  // 5. الأكواد المضمنة وزر النسخ (Inline Code: `code`)
+  .inline-code-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 2px;
+    vertical-align: middle;
+
+    code {
+      background-color: rgb(36, 32, 25);
+      color: rgb(243, 198, 85);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 0.9em;
+      font-family: 'Fira Code', 'Cascadia Code', Consolas, 'Courier New', monospace;
+    }
+
+    .inline-code-copy-btn {
+      display: inline-block !important;
+      border: none;
+      background-color: rgb(36, 32, 25);
+      color: rgb(243, 198, 85);
+      border-radius: 4px;
+      padding: 0 5px;
+      margin-left: 4px;
+      font-size: 11px;
+      line-height: 1.4;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s, background 0.2s, transform 0.1s;
+
+      &:hover {
+        opacity: 1;
+        background: #585b70;
+        transform: scale(1.05);
+      }
+
+      &.copied {
+        background: #a6e3a1;
+        color: #11111b;
+        opacity: 1;
+      }
+    }
+  }
+
+  // 6. كتل الأكواد الكاملة وزر النسخ (``` code ```)
+  pre {
+    position: relative;
+    background-color: #000000 !important;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+
+    code {
+      background-color: transparent !important;
+      color: #f5e0dc;
+      text-shadow: none !important;
+      font-family: 'Fira Code', 'Cascadia Code', Consolas, 'Courier New', monospace;
+      font-size: 0.92em;
+      line-height: 1.55;
+    }
+
+    .code-copy-btn {
+      display: block !important;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #313244;
+      border: 1px solid #45475a;
+      color: #cdd6f4;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s, background 0.2s, border-color 0.2s;
+      z-index: 10;
+
+      &:hover {
+        opacity: 1;
+        background: #45475a;
+        border-color: #89b4fa;
+      }
+
+      &.copied {
+        background: #a6e3a1;
+        color: #11111b;
+        border-color: #a6e3a1;
+        opacity: 1;
+      }
+    }
+
+    &:hover .code-copy-btn {
+      opacity: 0.95;
+    }
+  }
+
+  // 7. الاقتباسات والملاحظات التوضيحية (Blockquotes & Callouts)
+  blockquote {
+    color: #a6adc8;
+    background-color: #181825;
+    border-left: 4px solid #b4befe;
+    padding: 12px 18px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+
+    p {
+      margin: 0;
+    }
+
+    blockquote {
+      background-color: #11111b;
+      border-left-color: #cba6f7;
+      margin-top: 10px;
+    }
+  }
+
+  // 8. القوائم والمهام (Lists & Task Lists)
+  ul, ol {
+    padding-left: 24px;
+    margin: 12px 0;
+
+    li {
+      margin-bottom: 6px;
+    }
+  }
+
+  // مربعات الاختيار في قوائم المهام
+  input[type="checkbox"] {
+    accent-color: #89b4fa;
+    margin-right: 6px;
+    transform: scale(1.1);
+    vertical-align: middle;
+  }
+
+  // 9. الجداول (Tables)
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 18px 0;
+    border-radius: 6px;
+    overflow: hidden;
+
+    th, td {
+      border: 1px solid #45475a;
+      padding: 10px 14px;
+    }
+
+    th {
+      background-color: #313244;
+      color: #89b4fa;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    tr:nth-child(2n) {
+      background-color: #181825;
+    }
+
+    tr:hover {
+      background-color: #262738;
+    }
+  }
+
+  // 10. الخطوط الفاصلة (Horizontal Rules)
+  hr {
+    border: 0;
+    height: 1px;
+    background: #45475a;
+    margin: 28px 0;
+  }
+
+  // 11. شريط التمرير المخصص (Custom Scrollbar)
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #181825;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #45475a;
+    border-radius: 4px;
+
+    &:hover {
+      background: #585b70;
+    }
+  }
+}
+
+// 12. شريط الفهرس الجانبي (TOC Sidebar)
+.md-sidebar-toc.md-sidebar-toc {
+  background-color: #181825;
+  border-right: 1px solid #313244;
+
+  a {
+    color: #a6adc8;
+    &:hover {
+      color: #89b4fa;
+    }
+  }
+
+  .nav-active {
+    color: #cba6f7 !important;
+    font-weight: bold;
+  }
+}

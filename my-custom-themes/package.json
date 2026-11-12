@@ -1,0 +1,26 @@
+{
+  "name": "my-custom-themes",
+  "displayName": "My Custom Themes",
+  "version": "1.0.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "My Custom Dark",
+        "uiTheme": "vs-dark",
+        "path": "%USERPROFILE%/.scripts/themes/dark-theme.json"
+      },
+      {
+        "label": "My Custom Light",
+        "uiTheme": "vs",
+        "path": "%USERPROFILE%/.scripts/themes/light-theme.json"
+      }
+    ]
+  }
+}

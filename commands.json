@@ -808,7 +808,7 @@
           "name": "App Branding",
           "commands": [
             {
-              "name": "Create app info file .env",
+              "name": "Create app info file .env (Script)",
               "autoRun": true,
               "icon": {
                 "type": "fontawesome",
@@ -839,7 +839,7 @@
               ]
             },
             {
-              "name": "Apply app info",
+              "name": "Apply app info (Script)",
               "autoRun": true,
               "icon": {
                 "type": "fontawesome",
@@ -1694,7 +1694,7 @@
               "autoRun": true,
               "icon": {
                 "type": "fontawesome",
-                "value": "fa-shield-halved",
+                "value": "fa-gear",
                 "color": "#66BB6A"
               },
               "commands": [
@@ -1902,6 +1902,55 @@
             "value": "fa-key",
             "color": "#91A4AE"
           }
+        },
+        {
+          "name": "Inno Setup",
+          "icon": {
+            "type": "fontawesome",
+            "value": "fa-box-open",
+            "color": "#0077b6"
+          },
+          "commands": [
+            {
+              "name": "Install Inno Setup",
+              "autoRun": true,
+              "icon": {
+                "type": "fontawesome",
+                "value": "fa-box-open",
+                "color": "#ffb703"
+              },
+              "commands": [
+                {
+                  "commands": [
+                    "sudo apt update && sudo apt install -y default-jdk"
+                  ],
+                  "shells": [
+                    "Bash",
+                    "Zsh",
+                    "Fish",
+                    "Dash"
+                  ]
+                },
+                {
+                  "commands": [
+                    "winget install Microsoft.OpenJDK.17"
+                  ],
+                  "shells": [
+                    "PowerShell"
+                  ]
+                },
+                {
+                  "commands": [
+                    "winget install Microsoft.OpenJDK.17"
+                  ],
+                  "shells": [
+                    "Cmd"
+                  ]
+                }
+              ]
+            }
+          ],
+          "folders": []
         }
       ]
     },
